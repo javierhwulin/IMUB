@@ -1,0 +1,204 @@
+@startuml
+
+
+class Escena {
+  # stage: Stage
+  # controller: Controller
+  + setStage(Stage): void
+  + setController(Controller): void
+}
+class EscenaEpisodiDetalls {
+  + data_anyEstrena: Text
+  + data_durada: Text
+  + data_temporada: Text
+  + data_descripcio: Text
+  - id_contingut_audiovisual: String
+  - numTemporada: Integer
+  - correu_persona: String
+  + data_valoracio: Text
+  + data_image_image: ImageView
+  - numEpisodi: Integer
+  + valorar_btn: Button
+  + data_numEpisodi: Text
+  + nomEpisodi_text: Text
+  + data_nom_Serie: Text
+  + start(): void
+  + initData(): void
+  + onBtnValorarClick(): void
+}
+class EscenaEpisodisSelector {
+  - correu_persona: String
+  + episodi_pane: AnchorPane
+  + episodi_btn: Button
+  - ESPAI_ENTRE_BOTONS: double
+  - num_temporada: Integer
+  - nom_serie: String
+  - createEpisodiButton(Integer, String, double, double, double, double): Button
+  + start(): void
+  + popularEpisodis(String, Integer): void
+  - mostrarEpisodiDetalls(Integer): void
+}
+enum EscenaFactory << enumeration >> {
+  + INSTANCE: 
+  + valueOf(String): EscenaFactory
+  ~ creaEscena(String, String): Escena
+  + values(): EscenaFactory[]
+}
+class EscenaLogin {
+  + login_correu: TextField
+  + register_btn: Button
+  + cancel_btn: Button
+  + login_btn: Button
+  + login_pwd: PasswordField
+  - correu: String
+  + onCancelButtonClick(): void
+  # onLoginButtonClick(): void
+  + start(): void
+  - event_goMain(String): void
+  # onRegisterWindow(): void
+}
+class EscenaMain {
+  + contingut_audiovisual_pane: AnchorPane
+  + comboBox_main_comunitat: ComboBox
+  + button_punts_main: Button
+  + image_main: ImageView
+  + button_estrelles_main: Button
+  + textPrincipal: Text
+  + button_izq_resetFiltres_main: Button
+  + valueColumn: TableColumn
+  + comboBox_main_tipus: ComboBox
+  + nomColumnWishList: TableColumn
+  + comboBox_TipusTop10: ComboBox
+  + tableTop10Valorades: TableView
+  + checkBoxPunts: CheckBox
+  + obra_audiovisual_btn: Button
+  - ESPAI_ENTRE_BOTONS: double
+  + tableWishList: TableView
+  + nomColumn: TableColumn
+  + button_likes_main: Button
+  + comboBox_main_tematica: ComboBox
+  + start(): void
+  - createObraAudiovisualButton(String, String, double, double, double, double): Button
+  + onButtonLikesClick(): void
+  + assignarTextPrincipal_Correu_i_Comunitat(String): void
+  - popularObresAudiovisualsPerNom(): void
+  + onButtonEstrellesClick(): void
+  - popularTopDeuValorades(): void
+  - mostrarFinestraObraAudiovisual(String): void
+  + popularComboBoxTipus(): void
+  + observable_comboBox_main_comunitat(): void
+  + onButtonPuntsClick(): void
+  + asignarimagen(): void
+  - popularWishList(): void
+  + onButtonIzqResetFiltresClick(): void
+  + popularComboBoxTematiques(): void
+}
+class EscenaPelliculaDetalls {
+  + data_text_caracteristiques: Text
+  + data_image_image: ImageView
+  - correu_persona: String
+  + data_text_nom: Text
+  + data_text_durada: Text
+  + wish_btn: Button
+  + data_text_descripcio: Text
+  + data_text_idioma: Text
+  + valorar_btn: Button
+  - nom_contingut_audiovisual: String
+  + nomPellicula_text: Text
+  + data_text_dataAnyPrimeraEmissio: Text
+  + initData(): void
+  + start(): void
+  + onBtnValorarClick(): void
+  + onBtnwishListAddClick(): void
+}
+class EscenaRegister {
+  + registre_correu: TextField
+  + registre_dni: TextField
+  + comboBox_register_comunitat: ComboBox<ComboBoxItemWrap<HashMap<Object, Object>>>
+  + registre_nom: TextField
+  + registre_cognoms: TextField
+  + cancellar_btn: Button
+  + registre_pwd: PasswordField
+  + registre_pwd_repeat: PasswordField
+  + registre_btn: Button
+  + start(): void
+  + populateComunitats(): void
+  + onRegistreButtonClick(): void
+  - event_goLogin(String): void
+  + onTornarLoginButtonClick(): void
+}
+class EscenaSerieDetalls {
+  + nomSerie_text: Text
+  + data_text_idioma: Text
+  + data_text_dataAnyPrimeraEmissio: Text
+  + data_image_image: ImageView
+  + valorar_btn: Button
+  + data_text_nom: Text
+  + wish_btn: Button
+  - correu_persona: String
+  - nom_contingut_audiovisual: String
+  + data_text_caracteristiques: Text
+  + data_text_descripcio: Text
+  + data_text_durada: Text
+  + start(): void
+  + onBtnWishListClick(): void
+  + onBtntemporadesViewAddClick(): void
+  + initData(): void
+}
+class EscenaTemporadesDetalls {
+  - correu_persona: String
+  - id_serie: String
+  + temporada_btn: Button
+  - ESPAI_ENTRE_BOTONS: double
+  + temporada_pane: AnchorPane
+  - mostrarEpisodisSelector(Integer): void
+  + start(): void
+  + popularTemporades(String): void
+  - createTemporadaButton(Integer, String, double, double, double, double): Button
+}
+class EscenaValorarObra {
+  + radioButton_G1_Text1: RadioButton
+  + button_valorar: Button
+  + radioButton_G3_Text3: RadioButton
+  - correu_persona: String
+  + radioButton_Group3_Text3: RadioButton
+  + radioButton_G2_Text2: RadioButton
+  + radioButton_Group3_Text1: RadioButton
+  + radioButton_Group1_Dislike: RadioButton
+  + textField_Group2: TextField
+  + radioButton_Group1_Like: RadioButton
+  + radioButton_Group3_Text5: RadioButton
+  + button_cancel: Button
+  - nom_obra_audiovisual: String
+  + radioButton_Group3_Text2: RadioButton
+  + radioButton_Group3_Text4: RadioButton
+  + initDisabled(): void
+  + start(): void
+  + onButtonCancelarClick(): void
+  + initObservers(): void
+  - initialize_RB(): void
+  + onButtonValorarClick(): void
+}
+class Vista {
+  # controller: Controller
+}
+
+EscenaEpisodiDetalls     -up-|>  Escena
+
+EscenaEpisodisSelector  -up-|>   Escena
+
+EscenaFactory            -->  Escena
+EscenaLogin              -up-|>  Escena
+EscenaMain               -up-|> Escena
+
+EscenaPelliculaDetalls   -up-|>  Escena
+EscenaRegister           -up-|>  Escena
+
+EscenaSerieDetalls       -up-|> Escena
+
+EscenaTemporadesDetalls  -up-|>  Escena
+
+EscenaValorarObra        -up-|> Escena
+Vista                    -down->  Escena
+
+@enduml

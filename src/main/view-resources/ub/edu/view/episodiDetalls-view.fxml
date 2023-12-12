@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+
+
+<AnchorPane prefHeight="428.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ub.edu.view.EscenaEpisodiDetalls">
+   <children>
+      <!-- Titulo principal-->
+      <Text layoutX="173.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Episodi" textAlignment="CENTER" wrappingWidth="338.0">
+         <font><Font size="30.0" /></font>
+      </Text>
+
+      <!-- Titulo Nom Episodi-->
+      <Text fx:id="nomEpisodi_text" layoutX="180.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="#Nom Obra Audiovisual" textAlignment="CENTER" wrappingWidth="312.0">
+         <font><Font size="20.0" /></font>
+      </Text>
+
+      <!-- Data Text serie -->
+      <Text fx:id="data_nom_Serie" layoutX="30.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Serie:" wrappingWidth="312.0" />
+
+      <!-- Data Text temporada -->
+      <Text fx:id="data_temporada" layoutX="30.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Temporada:" wrappingWidth="312.0" />
+
+      <!-- Data Text estrena -->
+      <Text fx:id="data_numEpisodi" layoutX="30.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Num. Episodi:" wrappingWidth="312.0" />
+
+      <!-- Data Text estrena -->
+      <Text fx:id="data_anyEstrena" layoutX="30.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data d'Estrena:" wrappingWidth="312.0" />
+
+      <!-- Data Text durada -->
+      <Text fx:id="data_durada" layoutX="30.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Durada:" wrappingWidth="312.0" />
+
+      <!-- Data Text descripcio -->
+      <Text fx:id="data_descripcio" layoutX="30.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripció:" wrappingWidth="312.0" />
+
+      <!-- Data Text valoracio inicial -->
+      <Text fx:id="data_valoracio" layoutX="30.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Valoració Inicial:" wrappingWidth="312.0" />
+
+        <!-- Image episodi -->
+      <ImageView fx:id="data_image_image" fitHeight="230.0" fitWidth="200.0" layoutX="400.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true" />
+
+      <!-- button accedir al valorar -->
+      <Button fx:id="valorar_btn" layoutX="400.0" layoutY="360.0" mnemonicParsing="false" onAction="#onBtnValorarClick" prefHeight="32.0" prefWidth="200.0" text="Valorar" />
+   </children>
+</AnchorPane>

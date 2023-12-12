@@ -1,0 +1,68 @@
+@startuml
+
+package controller{
+class Controller
+}
+package service {
+class DataService  {
+
+}
+class AbstractFactoryData {
+
+}
+class FactoryDB {
+  }
+class FactoryMOCK {
+  }
+}
+package model{
+class imUBCataleg {
+  + findPelicula(String): Pelicula
+  + findTematica(String): Tematica
+  + findContingutDigital(String): ContingutDigital
+  + findComunitat(String): Comunitat
+  + findEpisodi(String, int, int): Episodi
+  + findSerie(String): Serie
+  + esPelicula(String): boolean
+
+}
+class imUBClients {
+  + findClientCartera(String): Client
+  + addClient(Client): void
+}
+}
+
+package resources {
+class ResourcesFacade {
+  + addRelacioClientComunitat(String, String): StatusType
+  + initValoracions(): void
+  + addNewPersona(String, String, String, String, String): StatusType
+  + populateiImUBClients(): void
+  - iniValoracionsEpisodis(): void
+  + populateImUB(): void
+  + loadPelicules(): boolean
+  - relacionarComunitatsTemes(): void
+  - initPerfilClients(): void
+  - relacionarSeriesTemes(): void
+  + initCarteraClients(): boolean
+  + loadSeries(): boolean
+  + loadTematiques(): boolean
+  + loadComunitats(): boolean
+  - relacionarPeliculesTemes(): void
+  - initWish(): void
+  - iniValoracionsPelicules(): void
+}
+
+
+ResourcesFacade       "1" o-right-> "1" DataService
+ResourcesFacade       "1" o-right-> "1" AbstractFactoryData
+AbstractFactoryData   <|-- FactoryDB
+AbstractFactoryData   <|--  FactoryMOCK
+controller.Controller         "1" -down->"1"ResourcesFacade
+DataService "1"-down-"1" AbstractFactoryData
+ResourcesFacade       "1" o-down-> "1" model.ModelFacade
+
+ResourcesFacade       "1" o-down-> "1" imUBCataleg
+ResourcesFacade       "1" o-down-> "1" imUBClients
+
+@enduml

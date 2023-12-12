@@ -1,0 +1,163 @@
+@startuml
+
+
+package model {
+class CarteraClients {
+  + find(String): Client
+  + add(Client): void
+}
+class Client {
+  - pwd: String
+  - nom: String
+
+}
+class ModelFacade {
+  + findPersonaByCorreu(String): Client
+  + getAllComunitatsPerPersona(String): List<HashMap<Object, Object>>
+  + getDetallsSerie(String): HashMap<Object, Object>
+  + addComunitatClient(String, String): void
+  + getDetallsPelicula(String): HashMap<Object, Object>
+  + getAllEpisodis(String, int): List<HashMap<Object, Object>>
+  + getAllTemporadesDeSerie(String): List<HashMap<Object, Object>>
+  + getEpisodiDetalls(String, Integer, Integer): HashMap<Object, Object>
+  + loguejarSociStatus(String, String): StatusType
+  + esPelicula(String): boolean
+  + addToWishList(String, String): StatusType
+  + getWishList(String, int): List<HashMap<Object, Object>>
+  + valorarContingut(String, String, String, String): boolean
+  + TopList(String, String, String, int): List<HashMap<Object, Object>>
+}
+
+package cataleg {
+class Comunitat {
+  - descripcioComunitat: String
+  - communitylist: List<ContingutDigital>
+  + addTematica(Tematica): void
+  + addContingutDigital(ContingutDigital): void
+}
+
+
+enum ContingutType {
+  Pelicula, Serie, Temporada, Episodi
+}
+
+class ContingutDigital {
+    - titol: String
+    - descripcio: String
+    - anyPrimeraEmissio: int
+    ~ idioma: String
+  ~ durada: int
+  + addTematica(Tematica): void
+
+}
+
+
+
+class Episodi {
+  - titol: String
+  - nomSerie: String
+  - numTemporada: int
+  - numEpisodi: int
+  - descripcio: String
+  - url: String
+
+  - valoracioInicial: float
+  + equals(Episodi): boolean
+
+
+}
+
+class Pelicula {
+    - valoracioInicial: float
+    - URL: String
+    + equals(Pelicula): boolean
+
+}
+
+
+class Serie {
+  - imatgeUrl: String
+   - numTemporades: int
+     + addTemporada(Temporada): void
+     + findTemporada(int): Temporada
+
+}
+
+class Tematica {
+  - nomTematica: String
+}
+class Temporada {
+  -  nomSerie: String
+  - numTemporada: int
+  + addEpisodi(Episodi): void
+  + findEpisodi(int): Episodi
+
+}
+}
+enum StatusType << enumeration >> {
+  + toString(): String
+  + values(): StatusType[]
+  + valueOf(String): StatusType
+}
+
+class imUBCataleg {
+  + findPelicula(String): Pelicula
+  + findTematica(String): Tematica
+  + findContingutDigital(String): ContingutDigital
+  + findComunitat(String): Comunitat
+  + findEpisodi(String, int, int): Episodi
+  + findSerie(String): Serie
+  + esPelicula(String): boolean
+
+}
+class imUBClients {
+  + findClientCartera(String): Client
+  + addClient(Client): void
+}
+class Seguretat {
+  + isMail(String): boolean
+  + isPasswordSegur(String): boolean
+  + validatePassword(String): StatusType
+  + validateUsername(String): StatusType
+}
+}
+
+
+
+
+
+Controller         "1" -down->"1"  imUBCataleg
+Controller       "1" -down->"1" imUBClients
+imUBClients       "1" *--> "1"  CarteraClients
+
+Controller         "1" -left->"1" ModelFacade
+Controller         "1" -->"1" StatusType
+ModelFacade         "1" -up->"1" StatusType
+CarteraClients    "1" -down->"*" Client
+
+imUBCataleg       "1" *-down-> "*" Comunitat
+imUBCataleg        "1" *-down-> "*" ContingutDigital
+imUBCataleg       "1" *-left-> "*"  Tematica
+
+ContingutDigital  "1" -->"*" Tematica
+
+Comunitat         "1" -->"*" ContingutDigital
+Comunitat         "1" -down->"*" Tematica
+
+Episodi           "1" *-left->"*" Tematica
+
+ModelFacade       "1" -down-> "1" imUBCataleg
+ModelFacade       "1" -down-> "1" imUBClients
+imUBCataleg       "1" --> "1" ContingutType
+
+Pelicula           -up-|>  ContingutDigital
+
+ModelFacade "1"-up-> "1"Seguretat
+Seguretat          -[#595959,dashed]->  StatusType        
+Serie           -up-|>  ContingutDigital
+Serie             "1"*--> "*" Temporada
+Temporada         "1" *--> "*" Episodi
+
+ContingutDigital "1" -right->"1" ContingutType
+
+@enduml

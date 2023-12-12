@@ -1,0 +1,37 @@
+@startuml
+
+
+class Controller {
+  - sessionMemory: SessionMemory
+  + getAllComunitatsPerPersona(String): List<HashMap<Object, Object>>
+  + getWishList(String): List<HashMap<Object, Object>>
+  + esPelicula(String): boolean
+  + addNewPersona(String, String, String, String, String): String
+  + getEpisodiDetalls(String, Integer, Integer): HashMap<Object, Object>
+  + addToWishList(String, String): String
+  + getAllEpisodis(String, int): List<HashMap<Object, Object>>
+  + getDetallsPelicula(String): HashMap<Object, Object>
+  + loguejarSociStatus(String, String): String
+  + top10(String, String, String): List<HashMap<Object, Object>>
+  + getAllTemporadesDeSerie(String): List<HashMap<Object, Object>>
+  + getDetallsSerie(String): HashMap<Object, Object>
+  + addRelacioComunitatClient(String, String): String
+  + valorarContingut(String, String, String, String): boolean
+
+}
+class SessionMemory {
+  ~ nomPelicula: String
+  ~ nomSerie: String
+  ~ titolEpisodi: String
+  ~ nomComunitat: String
+  ~ nomTematica: String
+  ~ numEpisodi: Integer
+  ~ numTemporada: Integer
+  ~ tipusObra: String
+  ~ correuPersona: String
+
+}
+
+Controller    "1" *-[#595959,plain]-> "sessionMemory\n1" SessionMemory 
+
+@enduml

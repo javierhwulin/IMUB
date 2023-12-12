@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" prefHeight="503.0" prefWidth="450.0" spacing="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ub.edu.view.EscenaRegister">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="0.0" />
+    </padding>
+   <children>
+      <AnchorPane id="anchorpane" minHeight="280.0" minWidth="280.0" prefHeight="346.0" prefWidth="410.0">
+         <children>
+             <Text layoutX="150" layoutY="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IMUB">
+                 <font>
+                  <Font size="35.0" />
+               </font>
+             </Text>
+   
+             <Text layoutX="150" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Registre">
+                 <font>
+                  <Font size="24.0" />
+               </font>
+             </Text>
+   
+             <Text layoutX="20.0" layoutY="70.0" text="Correu electrònicn (*)" />
+             <TextField fx:id="registre_correu" layoutX="150.0" layoutY="55.0" prefHeight="25.0" prefWidth="188.0" />
+   
+             <Text layoutX="20.0" layoutY="100.0" text="Nom" />
+             <TextField fx:id="registre_nom" layoutX="150.0" layoutY="85.0" prefHeight="25.0" prefWidth="188.0" />
+   
+             <Text layoutX="20.0" layoutY="130.0" text="Cognoms" />
+             <TextField fx:id="registre_cognoms" layoutX="150.0" layoutY="115.0" prefHeight="25.0" prefWidth="188.0" />
+   
+             <Text layoutX="20.0" layoutY="160.0" text="Dni" />
+             <TextField fx:id="registre_dni" layoutX="150.0" layoutY="145.0" prefHeight="25.0" prefWidth="188.0" />
+   
+             <Text layoutX="20.0" layoutY="190.0" text="Password (*)" />
+             <PasswordField fx:id="registre_pwd" layoutX="150.0" layoutY="175.0" prefHeight="25.0" prefWidth="188.0" />
+   
+             <Text layoutX="20.0" layoutY="220.0" text="Repeteix la Password (*)" />
+             <PasswordField fx:id="registre_pwd_repeat" layoutX="150.0" layoutY="205.0" prefHeight="25.0" prefWidth="188.0" />
+   
+   
+             <!-- empieza en izquierda 150 y acaba en derecha 300-->
+             <Text layoutX="20.0" layoutY="250.0" text="Comunitat" />
+            <Separator layoutX="13.0" layoutY="283.0" prefHeight="16.0" prefWidth="385.0" />
+      
+                    <Button fx:id="registre_btn" layoutX="58.0" layoutY="317.0" onAction="#onRegistreButtonClick" prefHeight="25.0" prefWidth="149.0" text="Registrar-se" />
+           <Button fx:id="cancellar_btn" layoutX="227.0" layoutY="317.0" onAction="#onTornarLoginButtonClick" prefHeight="25.0" prefWidth="149.0" text="Cancel·lar" />
+            <ComboBox fx:id="comboBox_register_comunitat" layoutX="150.0" layoutY="233.0" prefHeight="25.0" prefWidth="188.0" promptText="Cominitats Existents" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

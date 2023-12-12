@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" prefHeight="500.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ub.edu.view.EscenaEpisodisSelector">
+   <children>
+   
+      <AnchorPane id="anchorpane" minHeight="0.0" minWidth="0.0" prefHeight="480.0" prefWidth="330.0">
+          <children>
+              <!-- Titulo -->
+              <Text layoutX="112.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Episodis">
+                  <font>
+                  <Font size="35.0" />
+               </font>
+              </Text>
+   
+              <!-- Scroll de los Tram-->
+              <ScrollPane layoutX="30.0" layoutY="50.0" prefHeight="400.0" prefWidth="300.0">
+                  <content>
+                      <AnchorPane fx:id="episodi_pane" minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="298.0">
+                          <children>
+                              <Button fx:id="episodi_btn" layoutX="11.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="275.0" text="Episodi Detail" />
+                          </children>
+                      </AnchorPane>
+                  </content>
+              </ScrollPane>
+          </children>
+      </AnchorPane>
+   </children>
+</VBox>

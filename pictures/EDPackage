@@ -1,0 +1,61 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class Llista<T> {
+  - elements: List<T>
+  - containsName(String): boolean
+  + add(T): boolean
+  + find(String): T
+  + remove(T): void
+   elements: List<T>
+   size: int
+}
+class Parell<T, V> {
+  ~ element2: V
+  ~ element1: T
+  + hashCode(): int
+  + equals(Object): boolean
+   element1: T
+   element2: V
+}
+class Quartet<T, V, K, Z> {
+  ~ element2: V
+  ~ element4: Z
+  ~ element1: T
+  ~ element3: K
+  + hashCode(): int
+  + equals(Object): boolean
+   element1: T
+   element3: K
+   element4: Z
+   element2: V
+}
+class Quintet<T, U, V, W, X> {
+  ~ element5: X
+  ~ element2: U
+  ~ element4: W
+  ~ element1: T
+  ~ element3: V
+  + hashCode(): int
+  + equals(Object): boolean
+   element1: T
+   element2: U
+   element3: V
+   element4: W
+   element5: X
+}
+class Trio<T, V, K> {
+  ~ element1: T
+  ~ element3: K
+  ~ element2: V
+  + hashCode(): int
+  + equals(Object): boolean
+   element1: T
+   element2: V
+   element3: K
+}
+
+@enduml
