@@ -1,5 +1,6 @@
 package ub.edu.view;
 
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import ub.edu.controller.Controller;
 
@@ -15,6 +16,5 @@ public class Vista {
 
         //Li enviem la finestra (stage) i el controlador a la nova escena
         login.setController(controller);
-
     }
 }

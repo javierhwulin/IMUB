@@ -3,7 +3,6 @@ package ub.edu.view;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,7 +18,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
-
 
 public class EscenaMain extends Escena  {
     private static final double ESPAI_ENTRE_BOTONS = 30;
@@ -50,6 +48,8 @@ public class EscenaMain extends Escena  {
 
     public void start() throws Exception {
         String correu = controller.getSessionMemory().getCorreuPersona();
+        initViewMemory();
+        initStartMain();
         assignarTextPrincipal_Correu_i_Comunitat(correu);
         asignarimagen();
         popularComboBoxTipus(); //success
@@ -59,6 +59,25 @@ public class EscenaMain extends Escena  {
         popularTopDeuValorades();
         popularWishList();
     }
+
+    public void reload() {
+        popularTopDeuValorades();
+        popularWishList();
+    }
+
+    public void initStartMain(){
+        comboBox_TipusTop10.setValue("Pelicula");
+        checkBoxPunts.setSelected(true);
+    }
+
+    public void initViewMemory() {
+        controller.getViewMemory().setMainScene(this);
+        controller.getViewMemory().setFilterTypeValue("ValorPunts");
+        controller.getViewMemory().setFilterStrategyValue("ValoracioStrategyPromig");
+        controller.getViewMemory().setFilterTypeObraAudioVisual("ALL");
+        controller.getViewMemory().setFilterTypeTop("Pelicula");
+    }
+
     public void assignarTextPrincipal_Correu_i_Comunitat(String correuPersona) throws Exception {
         //Paso1. Teniendo el correo de la persona, buscar el id del grupo.
         List<HashMap<Object,Object>> resuListGrupHashMap= controller.getAllComunitatsPerPersona(correuPersona);
@@ -137,18 +156,45 @@ public class EscenaMain extends Escena  {
         }
     }
     private void popularTopDeuValorades() {
+        //Borrar todos los elementos existentes en la TableView antes de popularla de nuevo con los nuevos datos.
+        tableTop10Valorades.getItems().clear();
+
         //La clase interna DataTop está justo arriba de esta función.
         nomColumn.setCellValueFactory(new PropertyValueFactory<DataTop, String>("nom"));
         valueColumn.setCellValueFactory(new PropertyValueFactory<DataTop, String>("value"));
 
 
-        // TO DO Pràctica 4 - inicialment s'omplen els top10 per valoració mitjana punts i pel·licules
-        List<HashMap<Object, Object>> listaObres = controller.top10("Pelicula", "ValorPunts", "ValoracioStrategyPromig");
-        for (HashMap<Object, Object> obra : listaObres) {
-            String nom = (String) obra.get("nom");
-            Double valor = (Double) obra.get("valor");
+        // TODO Pràctica 4 - inicialment s'omplen els top10 per valoració mitjana punts i pel·licules
+        String tipusContingut = controller.getViewMemory().getFilterTypeTop();
+        String FilterType = controller.getViewMemory().getFilterTypeValue();
+        String FilterStrategy = controller.getViewMemory().getFilterStrategyValue();
+
+        if(FilterType.equals("ValorPunts")) {
+            button_punts_main.setStyle("-fx-background-color: #ff0000");
+            button_estrelles_main.setStyle("-fx-background-color: #ffffff");
+            button_likes_main.setStyle("-fx-background-color: #ffffff");
+        }else if(FilterType.equals("ValorEstrelles")) {
+            button_punts_main.setStyle("-fx-background-color: #ffffff");
+            button_estrelles_main.setStyle("-fx-background-color: #3bb143");
+            button_likes_main.setStyle("-fx-background-color: #ffffff");
+        }else{
+            button_punts_main.setStyle("-fx-background-color: #ffffff");
+            button_estrelles_main.setStyle("-fx-background-color: #ffffff");
+            button_likes_main.setStyle("-fx-background-color: #006fb9");
+        }
+        List<HashMap<String, String>> listaObres;
+        if(FilterType.equals("ValorPunts")) {
+            listaObres = controller.top10(tipusContingut, FilterType, FilterStrategy);
+        }else{
+            listaObres = controller.top10(tipusContingut, FilterType, "ValoracioStrategyAbsolut");
+        }
+
+
+        for (HashMap<String, String> obra : listaObres) {
+            String nom = obra.get("nom");
+            float valor = Float.parseFloat(obra.get("valor"));
             tableTop10Valorades.getItems().add(
-                    new DataTop(nom, valor.intValue()));
+                    new DataTop(nom, (int) valor));
         }
 
         // TODO opcional Pràctica 4: obrir la possibilitat de poder valorar per estrategia de ponderacio i per altres tipus de valoracions
@@ -156,7 +202,23 @@ public class EscenaMain extends Escena  {
     }
 
     private void popularObresAudiovisualsPerNom(){
-        List<HashMap<Object,Object>> listaObres = controller.getAllContingutsDigitalsPerNom();
+        //Esborrem tots el continguts que hi havia al pane abans de popularlo
+        contingut_audiovisual_pane.getChildren().clear();
+
+        List<HashMap<Object,Object>> listaObres;
+        Object str_default_ComboBox_tematica = comboBox_main_tematica.getPromptText();
+        comboBox_main_tematica.setValue(str_default_ComboBox_tematica);
+        if(controller.getViewMemory().getFilterTypeObraAudioVisual() == null){
+            listaObres = controller.getAllContingutsDigitalsPerNom();
+        }else if(controller.getViewMemory().getFilterTypeObraAudioVisual().equals("Pelicula")){
+            listaObres = controller.getAllPelicules();
+        }else if(controller.getViewMemory().getFilterTypeObraAudioVisual().equals("Serie")){
+           listaObres = controller.getAllSeries();
+        }else{
+            listaObres = controller.getAllContingutsDigitalsPerNom();
+        }
+
+
         System.out.println(listaObres.toString());
         if(listaObres == null || listaObres.isEmpty()){
             return;
@@ -243,26 +305,118 @@ public class EscenaMain extends Escena  {
         comboBox_main_tipus.getItems().add(1,"Pelicula");
         comboBox_main_tipus.getItems().add(2,"Serie");
 
-
         //añadir el listener del combobox
         comboBox_main_tipus.valueProperty().addListener(new ChangeListener<String>() {
             //OPCIÓN-1 -> asignar listener para que se ejecute cuando detecte el cambio
             @Override public void changed(ObservableValue classObject, String oldValue, String newValue) {
-                System.out.println("TODO: Filtrar Per Tipus: "+newValue);
+                System.out.println("Filtrar Per Tipus: "+newValue);
                 //TODO: extensión de popular la lista de Peliculas
-
-                List<HashMap<Object,Object>> listaObres;
                 switch (newValue) {
                     case "Pelicula":
-                        listaObres = controller.getAllPelicules();
+                        controller.getViewMemory().setFilterTypeObraAudioVisual("Pelicula");
+                        popularObresAudiovisualsPerNom();
                         break;
                     case "Serie":
-                        listaObres = controller.getAllSeries();
+                        controller.getViewMemory().setFilterTypeObraAudioVisual("Serie");
+                        popularObresAudiovisualsPerNom();
                         break;
                     default:
-                        listaObres = controller.getAllContingutsDigitalsPerNom();
+                        controller.getViewMemory().setFilterTypeObraAudioVisual("ALL");
+                        popularObresAudiovisualsPerNom();
                 }
-                System.out.println(listaObres.toString());
+            }
+        });
+
+        comboBox_TipusTop10.getItems().add(0,"Selecciona el tipus");
+        comboBox_TipusTop10.getItems().add(1,"Pelicula");
+        comboBox_TipusTop10.getItems().add(2,"Serie");
+        comboBox_TipusTop10.setCellFactory(param -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty || item.isEmpty()) {
+                    setText(null);
+                } else {
+                    setText(item);
+                    setDisable(item.equals("Selecciona el tipus"));
+                }
+            }
+        });
+        comboBox_TipusTop10.valueProperty().addListener(new ChangeListener<String>() {
+            @Override public void changed(ObservableValue classObject, String oldValue, String newValue) {
+                System.out.println("Filtrar Per Tipus: "+newValue);
+                //TODO: extensión de popular el Top10 por Top10 de Peliculas segons el tipus Pel·lícules o Sèries
+                tableTop10Valorades.getItems().clear();
+
+                String filterType = controller.getViewMemory().getFilterTypeValue();
+                String filterStrategy = controller.getViewMemory().getFilterStrategyValue();
+                String tipusContingut;
+                if(newValue.equals("Pelicula")){
+                    tipusContingut = "Pelicula";
+                    controller.getViewMemory().setFilterTypeTop("Pelicula");
+                }else if(newValue.equals("Serie")){
+                    tipusContingut = "Serie";
+                    controller.getViewMemory().setFilterTypeTop("Serie");
+                }else{
+                    tipusContingut = "Pelicula";
+                    controller.getViewMemory().setFilterTypeTop("Pelicula");
+                }
+                List<HashMap<String, String>> listaObres;
+                if(filterType.equals("ValorPunts")) {
+                    listaObres = controller.top10(tipusContingut, filterType, filterStrategy);
+                }else{
+                    listaObres = controller.top10(tipusContingut, filterType, "ValoracioStrategyAbsolut");
+                }
+
+                for (HashMap<String, String> obra : listaObres) {
+                    String nom = obra.get("nom");
+                    float valor = Float.parseFloat(obra.get("valor"));
+                    tableTop10Valorades.getItems().add(
+                            new DataTop(nom, (int) valor));
+                }
+            }
+        });
+    }
+
+    public void popularComboBoxTematiques() throws Exception {
+        List<HashMap<Object,Object>> tematiques = controller.getAllTematiques();
+        System.out.println("Tematiques: "+tematiques);
+        String s = comboBox_main_tematica.getPromptText();
+        comboBox_main_tematica.getItems().add(s);
+
+        String nom=null;
+        for (HashMap<Object,Object> tematica: tematiques) {
+            if(tematica.get("nom")!=null){nom=(String) tematica.get("nom");}
+            comboBox_main_tematica.getItems().add(nom);
+        }
+
+        //añadir el listener del combobox
+        comboBox_main_tematica.valueProperty().addListener(new ChangeListener<String>() {
+            //OPCIÓN-1 -> asignar listener para que se ejecute cuando detecte el cambio
+            @Override public void changed(ObservableValue classObject, String oldValue, String newValue) {
+                System.out.println("TODO: Filtrar continguts por temàtica: "+newValue);
+                //TODO: extensión de popular la lista de continguts per temàtica
+                //Esborrem tots el continguts que hi havia al pane
+                contingut_audiovisual_pane.getChildren().clear();
+
+                List<HashMap<Object,Object>> listaObres;
+                if(newValue.equals("Filtrar per Temàtica")){
+                    if(controller.getViewMemory().getFilterTypeObraAudioVisual().equals("Pelicula")) {
+                        listaObres = controller.getAllPelicules();
+                    }else if(controller.getViewMemory().getFilterTypeObraAudioVisual().equals("Serie")) {
+                        listaObres = controller.getAllSeries();
+                    }else {
+                        listaObres = controller.getAllContingutsDigitalsPerNom();
+                    }
+                }else{
+                    if(controller.getViewMemory().getFilterTypeObraAudioVisual().equals("Pelicula")) {
+                        listaObres = controller.getAllPeliculesPerTematica(newValue);
+                    }else if(controller.getViewMemory().getFilterTypeObraAudioVisual().equals("Serie")) {
+                        listaObres = controller.getAllSeriesPerTematica(newValue);
+                    }else{
+                        listaObres = controller.getAllContingutsDigitalsPerTematica(newValue);
+                    }
+                }
                 if(listaObres == null || listaObres.isEmpty()){
                     return;
                 }
@@ -288,41 +442,6 @@ public class EscenaMain extends Escena  {
                 contingut_audiovisual_pane.setPrefHeight(layoutY);
                 //Esborrem excursio_btn, que l'utilitzavem únicament com a referència per la mida dels botons
                 obresPaneChildren.remove(obra_audiovisual_btn);
-
-            }
-        });
-
-        comboBox_TipusTop10.getItems().add(0,"Selecciona el tipus");
-        comboBox_TipusTop10.getItems().add(1,"Pelicula");
-        comboBox_TipusTop10.getItems().add(2,"Serie");
-
-        comboBox_TipusTop10.valueProperty().addListener(new ChangeListener<String>() {
-             @Override public void changed(ObservableValue classObject, String oldValue, String newValue) {
-                System.out.println("TODO: Filtrar Per Tipus: "+newValue);
-                //TODO: extensión de popular el Top10 por Top10 de Peliculas segons el tipus Pel·lícules o Sèries
-
-            }
-        });
-    }
-
-    public void popularComboBoxTematiques() throws Exception {
-        List<HashMap<Object,Object>> tematiques = controller.getAllTematiques();
-        System.out.println("Tematiques: "+tematiques);
-        String s = comboBox_main_tematica.getPromptText();
-        comboBox_main_tematica.getItems().add(s);
-
-        String nom=null;
-        for (HashMap<Object,Object> tematica: tematiques) {
-            if(tematica.get("nom")!=null){nom=(String) tematica.get("nom");}
-            comboBox_main_tematica.getItems().add(nom);
-        }
-
-        //añadir el listener del combobox
-        comboBox_main_tematica.valueProperty().addListener(new ChangeListener<String>() {
-            //OPCIÓN-1 -> asignar listener para que se ejecute cuando detecte el cambio
-            @Override public void changed(ObservableValue classObject, String oldValue, String newValue) {
-                System.out.println("TODO: Filtrar continguts por temàtica: "+newValue);
-                //TODO: extensión de popular la lista de continguts per temàtica
             }
         });
     }
@@ -338,22 +457,32 @@ public class EscenaMain extends Escena  {
 
     public void onButtonPuntsClick(){
         controller.getSessionMemory().setTipusValoracio("ValorPunts");
+        controller.getViewMemory().setFilterTypeValue("ValorPunts");
         checkBoxPunts.setDisable(false);
+
+        popularTopDeuValorades();
     }
     public void onButtonEstrellesClick(){
         controller.getSessionMemory().setTipusValoracio("ValorEstrelles");
+        controller.getViewMemory().setFilterTypeValue("ValorEstrelles");
         checkBoxPunts.setDisable(true);
+        popularTopDeuValorades();
     }
     public void onButtonLikesClick() {
         controller.getSessionMemory().setTipusValoracio("ValorLikes");
+        controller.getViewMemory().setFilterTypeValue("ValorLikes");
         checkBoxPunts.setDisable(true);
+        popularTopDeuValorades();
     }
     public void onPonderadaCheckbox() {
         if (checkBoxPunts.isSelected()) {
             controller.getSessionMemory().setTipusStrategy("ValoracioStrategyPromig");
+            controller.getViewMemory().setFilterStrategyValue("ValoracioStrategyPromig");
         } else {
             controller.getSessionMemory().setTipusStrategy("ValoracioStrategyAbsolut");
+            controller.getViewMemory().setFilterStrategyValue("ValoracioStrategyAbsolut");
         }
         System.out.println("Strategy selected: " + controller.getSessionMemory().getTipusStrategy());
+        popularTopDeuValorades();
     }
 }

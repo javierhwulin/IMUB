@@ -25,4 +25,7 @@ public class CarteraClients {
         llista.add(c);
     }
 
+    public List<Client> getAll() {
+        return llista;
+    }
 }

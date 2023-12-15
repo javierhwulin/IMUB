@@ -1,6 +1,7 @@
 package ub.edu.model.cataleg;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 
@@ -49,8 +50,6 @@ public class ContingutDigital {
     public void setDescripcio(String descripcio) {
         this.descripcio = descripcio;
     }
-
-
 
     public int getAnyPrimeraEmissio() {
         return anyPrimeraEmissio;

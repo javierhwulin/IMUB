@@ -107,4 +107,8 @@ public class Episodi {
     public String getUrl() {
         return url;
     }
+
+    public void addValoracioInicial(float valoracioInicial) {
+        this.valoracioInicial = valoracioInicial;
+    }
 }

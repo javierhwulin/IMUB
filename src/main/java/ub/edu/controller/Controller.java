@@ -2,40 +2,44 @@ package ub.edu.controller;
 
 import ub.edu.model.*;
 import ub.edu.resources.ResourcesFacade;
+import ub.edu.view.ViewMemory;
 
 import java.util.*;
 
 
 public class Controller  {
 
-    private ResourcesFacade inicialitzador;
+    private final ResourcesFacade inicialitzador;
 
-    private ModelFacade modelFacade;
+    private final ModelFacade modelFacade;
 
-    private imUBCataleg imubCataleg;
+    private final imUBCataleg imubCataleg;
 
-    private imUBClients imubClients;
+    private final imUBClients imubClients;
 
-    private SessionMemory sessionMemory;
+    private final SessionMemory sessionMemory;
 
+    private final ViewMemory viewMemory;
 
     public Controller() {
         imubCataleg = new imUBCataleg();
         imubClients = new imUBClients();
 
         sessionMemory = new SessionMemory();
+        viewMemory = new ViewMemory();
         modelFacade = new ModelFacade(imubCataleg, imubClients);
-        inicialitzador = new ResourcesFacade(imubCataleg,imubClients, modelFacade);
+        inicialitzador = new ResourcesFacade(imubCataleg, imubClients, modelFacade);
         inicialitzador.populateImUB();
         inicialitzador.populateiImUBClients();
-
     }
 
     public SessionMemory getSessionMemory() {
         return sessionMemory;
     }
 
-
+    public ViewMemory getViewMemory() {
+        return viewMemory;
+    }
 
     public String addNewPersona(String correu, String nom, String cognoms, String dni, String password) throws Exception {
         return (inicialitzador.addNewPersona(correu, nom, cognoms, dni, password).toString());
@@ -95,15 +99,13 @@ public class Controller  {
         return modelFacade.valorarContingut(nomContingut, correu, valortype, valoracio);
     }
     public String addToWishList(String nomContingut, String correu) {
-
-        String result = modelFacade.addToWishList(nomContingut, correu).toString();
-        return result;
+        return modelFacade.addToWishList(nomContingut, correu).toString();
     }
 
     public List<HashMap<Object, Object>> getWishList(String correu) {
         return modelFacade.getWishList(correu, 10);
     }
-    public List<HashMap<Object, Object>> top10(String tipusContingut, String tipusValoracio, String tipusCalcul) {
+    public List<HashMap<String, String>> top10(String tipusContingut, String tipusValoracio, String tipusCalcul) throws IllegalArgumentException{
         return modelFacade.TopList(tipusContingut, tipusValoracio, tipusCalcul, 10);
     }
 
@@ -113,5 +115,17 @@ public class Controller  {
 
     public List<HashMap<Object, Object>> getAllSeries() {
         return modelFacade.getAllSeries();
+    }
+
+    public List<HashMap<Object, Object>> getAllContingutsDigitalsPerTematica(String tematica) {
+        return modelFacade.getAllContingutsDigitalsPerTematica(tematica);
+    }
+
+    public List<HashMap<Object, Object>> getAllPeliculesPerTematica(String tematica) {
+        return modelFacade.getAllPeliculesPerTematica(tematica);
+    }
+
+    public List<HashMap<Object, Object>> getAllSeriesPerTematica(String tematica) {
+        return modelFacade.getAllSeriesPerTematica(tematica);
     }
 }

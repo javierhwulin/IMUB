@@ -122,4 +122,40 @@ public class imUBCataleg {
         }
         return false;
     }
+
+    public List<ContingutDigital> getAllContingutsDigitalsPerTematica(String tematica) {
+        List<ContingutDigital> contingutDigitals = new ArrayList<>();
+        for (ContingutDigital c : getAllContingutsDigitals()) {
+            for(Tematica t : c.getLlistaTematiques()) {
+                if (t.getNomTematica().equals(tematica)) {
+                    contingutDigitals.add(c);
+                }
+            }
+        }
+        return contingutDigitals;
+    }
+
+    public List<Pelicula> getAllPeliculesPerTematica(String tematica) {
+        List<Pelicula> pelicules = new ArrayList<>();
+        for (Pelicula p : getAllPelicules()) {
+            for(Tematica t : p.getLlistaTematiques()) {
+                if (t.getNomTematica().equals(tematica)) {
+                    pelicules.add(p);
+                }
+            }
+        }
+        return pelicules;
+    }
+
+    public List<Serie> getAllSeriesPerTematica(String tematica) {
+        List<Serie> series = new ArrayList<>();
+        for (Serie s : getAllSeries()) {
+            for(Tematica t : s.getLlistaTematiques()) {
+                if (t.getNomTematica().equals(tematica)) {
+                    series.add(s);
+                }
+            }
+        }
+        return series;
+    }
 }

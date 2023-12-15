@@ -6,7 +6,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.ComboBox;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import ub.edu.model.StatusType;
 
 
@@ -93,6 +95,8 @@ public class EscenaRegister extends Escena {
             alert.setTitle("Error");
             alert.setHeaderText("Error en el registre");
             alert.setContentText("El correu y la contraseña son obligatories. Les contrasenyes deben coincidir");
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(new Image("/ub/edu/static-resources/ERROR.png"));
             alert.showAndWait();
             return;
         }
@@ -108,6 +112,8 @@ public class EscenaRegister extends Escena {
             alert.setTitle("Selección de Comunidad Incorrecta");
             alert.setHeaderText("Error en la selección de comunidades");
             alert.setContentText("Debe seleccionar al menos una comunidad y no más de cinco.");
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(new Image("/ub/edu/static-resources/ERROR.png"));
             alert.showAndWait();
             return;
         }
@@ -126,6 +132,8 @@ public class EscenaRegister extends Escena {
             alert.setTitle("Error");
             alert.setHeaderText("Error en el registre");
             alert.setContentText(resultat.toString());
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(new Image("/ub/edu/static-resources/ERROR.png"));
         } else {
             //Registre amb èxit:
             //PAS3- crear relacio comunitats amb el client
@@ -135,6 +143,8 @@ public class EscenaRegister extends Escena {
 
             alert.setTitle("Registre exitòs");
             alert.setHeaderText("Registre exitòs");
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(new Image("/ub/edu/static-resources/CONFIRMATION.png"));
             alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
                 @Override
                 public void handle(DialogEvent dialogEvent) {

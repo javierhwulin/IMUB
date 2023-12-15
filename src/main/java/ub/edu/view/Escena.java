@@ -11,6 +11,10 @@ public abstract class Escena {
         this.controller = controller;
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
     public void setStage(Stage newStage) {
         this.stage = newStage;
     }

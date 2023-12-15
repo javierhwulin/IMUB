@@ -85,7 +85,12 @@ public class EscenaPelliculaDetalls extends Escena{
         alert.setHeaderText("Èxit");
         alert.setContentText(result);
         alert.showAndWait();
-
+        try {
+            EscenaMain escenaMain = ((EscenaMain) this.controller.getViewMemory().getMainScene());
+            escenaMain.reload();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

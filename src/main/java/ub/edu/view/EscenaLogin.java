@@ -3,6 +3,8 @@ package ub.edu.view;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import ub.edu.model.StatusType;
 
 import java.io.IOException;
@@ -37,7 +39,7 @@ public class EscenaLogin extends Escena {
         String pwd = login_pwd.getText();
 
         String resultat = controller.loguejarSociStatus(correu, pwd);
-
+        System.out.println(resultat);
         if (resultat.equals(StatusType.CORREU_INEXISTENT.toString()) ||
                 resultat.equals(StatusType.CONTRASENYA_INCORRECTA.toString())) {
             //Problema en el login:
@@ -46,12 +48,17 @@ public class EscenaLogin extends Escena {
             alert.setTitle("Error");
             alert.setHeaderText("Error en el login");
             alert.setContentText(resultat);
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(new Image("/ub/edu/static-resources/ERROR.png"));
+            alert.showAndWait();
         } else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             //Login amb èxit:
             alert.setTitle("Login exitòs");
             alert.setHeaderText("Login exitòs");
             alert.setContentText("Vols llogar-te a la pagina?");
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(new Image("/ub/edu/static-resources/CONFIRMATION.png"));
             Optional<ButtonType> result = alert.showAndWait();
             if(result.isEmpty() || result.get() == ButtonType.CANCEL){
                 //alert desaparece o boton cancelar
@@ -74,6 +81,7 @@ public class EscenaLogin extends Escena {
             EscenaMain escenaMain = ((EscenaMain) main);
             main.setController(controller);
             this.controller.getSessionMemory().setCorreuPersona(correuPersona);
+            this.controller.getViewMemory().setMainScene(escenaMain);
             escenaMain.start();
             stage.close();
         } catch (IOException e) {

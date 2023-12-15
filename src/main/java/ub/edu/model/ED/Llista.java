@@ -18,7 +18,7 @@ public class Llista<T> {
         String newName = null;
 
         try {
-            newName = (String) element.getClass().getMethod("getName").invoke(element);
+            newName = (String) element.getClass().getMethod("getNom").invoke(element);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -32,7 +32,7 @@ public class Llista<T> {
     private boolean containsName(String name) {
         for (T element : elements) {
             try {
-                String elementName = (String) element.getClass().getMethod("getName").invoke(element);
+                String elementName = (String) element.getClass().getMethod("getNom").invoke(element);
                 if (elementName.equals(name)) {
                     return true;
                 }
@@ -49,7 +49,7 @@ public class Llista<T> {
     public T find(String name) {
         for (T element : elements) {
             try {
-                String elementName = (String) element.getClass().getMethod("getName").invoke(element);
+                String elementName = (String) element.getClass().getMethod("getNom").invoke(element);
                 if (elementName.equals(name)) {
                     return element;
                 }

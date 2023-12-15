@@ -1,11 +1,10 @@
 package ub.edu.model.cataleg;
-import ub.edu.model.cataleg.ContingutDigital;
 
 public class Pelicula extends ContingutDigital {
 
     private String url;
-
     private float valoracioInicial;
+
     public Pelicula(String titol, int estrena, int durada) {
         super(titol, estrena);
         this.durada = durada;
@@ -41,6 +40,4 @@ public class Pelicula extends ContingutDigital {
     public void setValoracioInicial(float valoracioInicial) {
         this.valoracioInicial = valoracioInicial;
     }
-
-
 }

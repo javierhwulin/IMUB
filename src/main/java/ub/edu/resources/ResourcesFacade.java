@@ -35,26 +35,17 @@ public class ResourcesFacade {
 
 
     public void populateImUB() {
-        try {
-            loadPelicules();
-            loadSeries();
-            loadTematiques();
-            loadComunitats();
-            relacionarPeliculesTemes();    // Suposem que les tematiques i les pel·lícules ja estan creades
-            relacionarSeriesTemes();       // Suposem que les tematiques i les series ja estan creades
-            relacionarComunitatsTemes();   // Suposem que les tematiques i les comunitats ja estan creades
-        } catch (Exception e) {
-            System.out.println("Exception: --> " + e.getMessage());
-        }
+        loadPelicules();
+        loadSeries();
+        loadTematiques();
+        loadComunitats();
+        relacionarPeliculesTemes();    // Suposem que les tematiques i les pel·lícules ja estan creades
+        relacionarSeriesTemes();       // Suposem que les tematiques i les series ja estan creades
+        relacionarComunitatsTemes();   // Suposem que les tematiques i les comunitats ja estan creades
     }
     public void populateiImUBClients() {
-        try {
-            initCarteraClients();
-            initPerfilClients();
-
-        } catch (Exception e) {
-            System.out.println("Exception: --> " + e.getMessage());
-        }
+        initCarteraClients();
+        initPerfilClients();
     }
 
     public boolean initCarteraClients() {
@@ -150,14 +141,14 @@ public class ResourcesFacade {
         }
     }
 
-    private void initPerfilClients() throws Exception {
+    private void initPerfilClients() {
         // Es considera que totes les classes amb les quals estan relacionades
         // les valoracions, els clients i els continguts valorables
         initWish();
         initValoracions();
     }
 
-    private void initWish() throws Exception  {
+    private void initWish() {
         List<Parell<String, String>> relacionsCPW = dataService.getAllRelacionsClientPeliculaWish();
 
         for (Parell p : relacionsCPW) {
@@ -172,40 +163,69 @@ public class ResourcesFacade {
         for (Parell p : relacionsCSW) {
             // TO DO  Pràctica 4: Cal afegir les valoracions de les sèries a la llista de desitjos del client
         }
-
     }
 
-    public void initValoracions() throws Exception {
-
+    private void initValoracions() {
         iniValoracionsPelicules();
         iniValoracionsEpisodis();
     }
 
-    private void iniValoracionsPelicules() {
+    private void iniValoracionsPelicules(){
         List<Trio<String, String, Float>> relacionsST = dataService.getAllRelacionsClientPeliculaPunts();
 
         for (Trio p : relacionsST) {
-            // TO DO Practica 4 : afegir les valoracions de pel·lícules per punts
+            // TODO Practica 4 : afegir les valoracions de pel·lícules per punts
             // nom client es (p.getElement1().toString(),
             // nom pelicula es p.getElement2().toString(),
             // valor es p.getElement3.toString());
+            String nomClient = p.getElement1().toString();
+            String nomPelicula = p.getElement2().toString();
+            String valor = p.getElement3().toString();
+            Client client = imUBClients.findClientCartera(nomClient);
+            if(client == null) System.out.println("Client no trobat");
+            else {
+                client.addPunts(imUBCataleg, nomPelicula, Float.parseFloat(valor));
+            }
         }
 
         List<Trio<String, String, Integer>> relacionsSTI = dataService.getAllRelacionsClientPeliculaEstrelles();
 
         for (Trio p : relacionsSTI) {
-            // TO DO Practica 4 : afegir les valoracions de pel·lícules per estrelles
+            // TODO Practica 4 : afegir les valoracions de pel·lícules per estrelles
             // nom client es (p.getElement1().toString(),
             // nom pelicula es p.getElement2().toString(),
             // estrelles es p.getElement3.toString());
+
+            String nomClient = p.getElement1().toString();
+            String nomPelicula = p.getElement2().toString();
+            String valor = p.getElement3().toString();
+
+            Client client = imUBClients.findClientCartera(nomClient);
+            if(client == null) System.out.println("Client no trobat");
+            else {
+                client.addEstrelles(imUBCataleg, nomPelicula, Float.parseFloat(valor));
+            }
         }
         List<Trio<String, String, Boolean>>  relacionsSTB = dataService.getAllRelacionsClientPeliculaLikes();
 
         for (Trio p : relacionsSTB) {
-            // TO DO Practica 4 : afegir les valoracions de pel·lícules per likes
+            // TODO Practica 4 : afegir les valoracions de pel·lícules per likes
             // nom client es (p.getElement1().toString(),
             // nom pelicula es p.getElement2().toString(),
             // likes es p.getElement3.toString());
+            String nomClient = p.getElement1().toString();
+            String nomPelicula = p.getElement2().toString();
+            String valor = p.getElement3().toString();
+
+            Client client = imUBClients.findClientCartera(nomClient);
+            if(client == null) System.out.println("Client no trobat");
+            else {
+                if (valor.equals("true")) {
+                    client.addLike(imUBCataleg, nomPelicula, 1.0f);
+                } else if (valor.equals("false")) {
+                    client.addLike(imUBCataleg, nomPelicula, 0.0f);
+                }
+            }
         }
     }
 
@@ -213,34 +233,70 @@ public class ResourcesFacade {
         List<Quintet<String, String, Integer, Integer, Float>> relacionsST = dataService.getAllRelacionsClientEpisodiPunts();
 
         for (Quintet p : relacionsST) {
-            // TO DO Practica 4 : afegir les valoracions de episodis per punts
+            // TODO Practica 4 : afegir les valoracions de episodis per punts
             // nom client es (p.getElement1().toString(),
             // nom serie es p.getElement2().toString(),
             // num temporada es p.getElement3.toString(),
             // num episodi es p.getElement4.toString(),
             // punts es p.getElement5.toString());
+            String nomClient = p.getElement1().toString();
+            String nomSerie = p.getElement2().toString();
+            String numTemporada = p.getElement3().toString();
+            String numEpisodi = p.getElement4().toString();
+            String valor = p.getElement5().toString();
 
+            Client client = imUBClients.findClientCartera(nomClient);
+            if(client == null) System.out.println("Client no trobat");
+            else {
+                client.addPunts(imUBCataleg, nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), Float.parseFloat(valor));
+            }
         }
 
         List<Quintet<String, String, Integer, Integer, Integer>> relacionsSTI = dataService.getAllRelacionsClientEpisodiEstrelles();
 
         for (Quintet p : relacionsSTI) {
-            // TO DO Practica 4 : afegir les valoracions de episodis per estrelles
+            // TODO Practica 4 : afegir les valoracions de episodis per estrelles
             // nom client es (p.getElement1().toString(),
             // nom serie es p.getElement2().toString(),
             // num temporada es p.getElement3.toString(),
             // num episodi es p.getElement4.toString(),
             // estrelles es p.getElement5.toString());
+            String nomClient = p.getElement1().toString();
+            String nomSerie = p.getElement2().toString();
+            String numTemporada = p.getElement3().toString();
+            String numEpisodi = p.getElement4().toString();
+            String valor = p.getElement5().toString();
+
+            Client client = imUBClients.findClientCartera(nomClient);
+            if(client == null) System.out.println("Client no trobat");
+            else {
+                client.addEstrelles(imUBCataleg, nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), Float.parseFloat(valor));
+            }
         }
         List<Quintet<String, String, Integer, Integer, Boolean>> relacionsSTB = dataService.getAllRelacionsClientEpisodiLikes();
 
         for (Quintet p : relacionsSTB) {
-            // TO DO Practica 4 : afegir les valoracions de episodis per likes
+            // TODO Practica 4 : afegir les valoracions de episodis per likes
             // nom client es (p.getElement1().toString(),
             // nom serie es p.getElement2().toString(),
             // num temporada es p.getElement3.toString(),
             // num episodi es p.getElement4.toString(),
             // likes es p.getElement5.toString());
+            String nomClient = p.getElement1().toString();
+            String nomSerie = p.getElement2().toString();
+            String numTemporada = p.getElement3().toString();
+            String numEpisodi = p.getElement4().toString();
+            String valor = p.getElement5().toString();
+
+            Client client = imUBClients.findClientCartera(nomClient);
+            if(client == null) System.out.println("Client no trobat");
+            else {
+                if (valor.equals("true")) {
+                    client.addLike(imUBCataleg, nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), 1.0f);
+                } else if (valor.equals("false")) {
+                    client.addLike(imUBCataleg, nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), 0.0f);
+                }
+            }
         }
     }
 

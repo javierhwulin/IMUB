@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import ub.edu.controller.SessionMemory;
 
+import java.io.IOException;
+
 public class EscenaValorarObra extends Escena {
 
     public RadioButton radioButton_Group1_Like;
@@ -126,7 +128,7 @@ public class EscenaValorarObra extends Escena {
         });
     }
 
-    public void onButtonValorarClick(){
+    public void onButtonValorarClick() {
         //enviar la valoracion
         //TODO:
         // La idea es: guardar la valoracion en el modelo y actualizar la vista en caso necesario
@@ -167,19 +169,79 @@ public class EscenaValorarObra extends Escena {
 
         System.out.println("EscenaValorarObra:onButtonValorarClick ->  Valoració de tipus: "+ typeValorar+ " és: "+ valor);
         //TODO Pràctica 4: Afegir comprobacions als valors
-
+        if(typeValorar.equals("ValorPunts")){
+            if(valor.isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Valoració no vàlida");
+                alert.setContentText("El camp de valoració no pot estar buit");
+                alert.showAndWait();
+                return;
+            }
+            try{
+                int valoracio = Integer.parseInt(valor);
+                if(valoracio < 1 || valoracio > 10){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Valoració no vàlida");
+                    alert.setContentText("El camp de valoració ha de ser un valor entre 1 i 10");
+                    alert.showAndWait();
+                    return;
+                }
+            }catch (NumberFormatException e){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Valoració no vàlida");
+                alert.setContentText("El camp de valoració ha de ser un valor numèric enter");
+                alert.showAndWait();
+                return;
+            }
+        }else if(typeValorar.equals("ValorEstrelles")){
+            if(valor.isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Valoració no vàlida");
+                alert.setContentText("El camp de valoració no pot estar buit");
+                alert.showAndWait();
+                return;
+            }
+        }else if(typeValorar.equals("ValorLikes")){
+            if(valor.isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Valoració no vàlida");
+                alert.setContentText("El camp de valoració no pot estar buit");
+                alert.showAndWait();
+                return;
+            }
+        }
         //TODO Pràctica 4: Fer efectiva la valoració d'una pel.licula via crida al controlador
+        if(controller.valorarContingut(nom_obra_audiovisual, correu_persona, typeValorar, valor)){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Valoració");
+            alert.setHeaderText("Valoració realitzada");
+            alert.setContentText("La valoració s'ha realitzat correctament");
+            alert.showAndWait();
+            stage.close();
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Valoració no realitzada");
+            alert.setContentText("La valoració no s'ha realitzat correctament");
+            alert.showAndWait();
+        }
+        controller.top10("Pelicula", "ValorPunts", "ValoracioStrategyPromig");
 
-        controller.valorarContingut(nom_obra_audiovisual, correu_persona, typeValorar, valor);
-
-        stage.close();
+        try {
+            EscenaMain escenaMain = ((EscenaMain) this.controller.getViewMemory().getMainScene());
+            escenaMain.reload();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
-
     public void onButtonCancelarClick(){
         //enviar la valoracion
         System.out.println("Entro en cancelar una valoracion");
         stage.close();
     }
-
-
 }

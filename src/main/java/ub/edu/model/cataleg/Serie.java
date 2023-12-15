@@ -60,4 +60,22 @@ public class Serie extends ContingutDigital {
     public String getImatgeUrl() {
         return imatgeUrl;
     }
+
+    public Float addValoracioInicial(float valoracio) {
+        this.valoracioInicial = valoracio;
+        return valoracioInicial;
+    }
+
+    public Float calculaValoracio() {
+        int numValoracio = 0;
+        float valoracioInicial = 0;
+
+        for (Temporada t : llistaTemporades) {
+            for (Episodi e : t.getEpisodis()) {
+                valoracioInicial += e.getValoracioInicial();
+                numValoracio++;
+            }
+        }
+        return addValoracioInicial(valoracioInicial / numValoracio);
+    }
 }
