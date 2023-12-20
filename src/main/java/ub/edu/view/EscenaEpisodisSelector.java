@@ -27,7 +27,7 @@ public class EscenaEpisodisSelector extends Escena{
 
     public void popularEpisodis(String id, Integer idTemp) throws Exception {
         List<HashMap<Object,Object>> hashMapList = controller.getAllEpisodis(id, idTemp);
-        if(hashMapList.size()==0){
+        if(hashMapList.isEmpty()){
             episodi_btn.setText("Empty Episodis");
             episodi_btn.setDisable(true);
             return;
@@ -41,8 +41,8 @@ public class EscenaEpisodisSelector extends Escena{
 
         String s;
         Button new_btn;
-        for (int i = 0; i < hashMapList.size(); i++) {
-            Integer numEpisodi = (Integer) hashMapList.get(i).get("numEpisodi");
+        for (HashMap<Object, Object> objectObjectHashMap : hashMapList) {
+            Integer numEpisodi = (Integer) objectObjectHashMap.get("numEpisodi");
             new_btn = createEpisodiButton(numEpisodi, "Episodi " + numEpisodi, width, height, layoutX, layoutY);
             episodisPaneChildren.add(new_btn);
             layoutY += ESPAI_ENTRE_BOTONS;
@@ -76,7 +76,7 @@ public class EscenaEpisodisSelector extends Escena{
     }
 
     private void mostrarEpisodiDetalls(Integer num_episodi) throws Exception {
-        Escena escena = EscenaFactory.INSTANCE.creaEscena("episodiDetalls-view", "Episodi "+String.valueOf(num_episodi) + "; Temporada " + this.num_temporada + "; Serie " + this.nom_serie);
+        Escena escena = EscenaFactory.INSTANCE.creaEscena("episodiDetalls-view", "Episodi "+num_episodi+ "; Temporada " + this.num_temporada + "; Serie " + this.nom_serie);
         EscenaEpisodiDetalls escenaEpisodiDetalls = ((EscenaEpisodiDetalls) escena);
         escena.setController(controller);
         this.controller.getSessionMemory().setNumEpisodi(num_episodi);

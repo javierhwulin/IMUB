@@ -1,7 +1,5 @@
 package ub.edu.resources;
 
-import ub.edu.model.StatusType;
-import ub.edu.model.Seguretat;
 import ub.edu.model.*;
 import ub.edu.model.ED.*;
 import ub.edu.model.cataleg.*;
@@ -11,21 +9,19 @@ import ub.edu.resources.service.DataService;
 import java.util.List;
 
 import ub.edu.resources.service.FactoryDB;
-import ub.edu.resources.service.FactoryMOCK;
 
 public class ResourcesFacade {
 
-    private AbstractFactoryData factory;      // Origen de les dades
-    private DataService dataService;         // Connexio amb les dades
-    private imUBCataleg imUBCataleg;                  // Model a tractar
-    private imUBClients imUBClients;
-
-    private ModelFacade modelFacade;
+    private final DataService dataService;         // Connexio amb les dades
+    private final imUBCataleg imUBCataleg;                  // Model a tractar
+    private final imUBClients imUBClients;
+    private final ModelFacade modelFacade;
 
     public ResourcesFacade(imUBCataleg imUBCataleg, imUBClients imubClients, ModelFacade modelFacade) {
         //factory = new FactoryMOCK();
 
-        factory = new FactoryDB();
+        // Origen de les dades
+        AbstractFactoryData factory = new FactoryDB();
         dataService = new DataService(factory);
         this.imUBCataleg = imUBCataleg;
         this.imUBClients = imubClients;
@@ -181,11 +177,8 @@ public class ResourcesFacade {
             String nomClient = p.getElement1().toString();
             String nomPelicula = p.getElement2().toString();
             String valor = p.getElement3().toString();
-            Client client = imUBClients.findClientCartera(nomClient);
-            if(client == null) System.out.println("Client no trobat");
-            else {
-                client.addPunts(imUBCataleg, nomPelicula, Float.parseFloat(valor));
-            }
+
+            modelFacade.valorarContingut(nomPelicula, nomClient, ValorType.VALORAR_PER_PUNTS.toString(), valor);
         }
 
         List<Trio<String, String, Integer>> relacionsSTI = dataService.getAllRelacionsClientPeliculaEstrelles();
@@ -201,10 +194,7 @@ public class ResourcesFacade {
             String valor = p.getElement3().toString();
 
             Client client = imUBClients.findClientCartera(nomClient);
-            if(client == null) System.out.println("Client no trobat");
-            else {
-                client.addEstrelles(imUBCataleg, nomPelicula, Float.parseFloat(valor));
-            }
+            modelFacade.valorarContingut(nomPelicula, nomClient, ValorType.VALORAR_PER_ESTRELLES.toString(), valor);
         }
         List<Trio<String, String, Boolean>>  relacionsSTB = dataService.getAllRelacionsClientPeliculaLikes();
 
@@ -217,14 +207,10 @@ public class ResourcesFacade {
             String nomPelicula = p.getElement2().toString();
             String valor = p.getElement3().toString();
 
-            Client client = imUBClients.findClientCartera(nomClient);
-            if(client == null) System.out.println("Client no trobat");
-            else {
-                if (valor.equals("true")) {
-                    client.addLike(imUBCataleg, nomPelicula, 1.0f);
-                } else if (valor.equals("false")) {
-                    client.addLike(imUBCataleg, nomPelicula, 0.0f);
-                }
+            if (valor.equals("true")) {
+                modelFacade.valorarContingut(nomPelicula, nomClient, ValorType.VALORAR_PER_LIKES.toString(), "1");
+            } else if (valor.equals("false")) {
+                modelFacade.valorarContingut(nomPelicula, nomClient, ValorType.VALORAR_PER_LIKES.toString(), "0");
             }
         }
     }
@@ -245,11 +231,7 @@ public class ResourcesFacade {
             String numEpisodi = p.getElement4().toString();
             String valor = p.getElement5().toString();
 
-            Client client = imUBClients.findClientCartera(nomClient);
-            if(client == null) System.out.println("Client no trobat");
-            else {
-                client.addPunts(imUBCataleg, nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), Float.parseFloat(valor));
-            }
+            modelFacade.valorarContingut(nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), nomClient, ValorType.VALORAR_PER_PUNTS.toString(), valor);
         }
 
         List<Quintet<String, String, Integer, Integer, Integer>> relacionsSTI = dataService.getAllRelacionsClientEpisodiEstrelles();
@@ -267,11 +249,7 @@ public class ResourcesFacade {
             String numEpisodi = p.getElement4().toString();
             String valor = p.getElement5().toString();
 
-            Client client = imUBClients.findClientCartera(nomClient);
-            if(client == null) System.out.println("Client no trobat");
-            else {
-                client.addEstrelles(imUBCataleg, nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), Float.parseFloat(valor));
-            }
+            modelFacade.valorarContingut(nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), nomClient, ValorType.VALORAR_PER_ESTRELLES.toString(), valor);
         }
         List<Quintet<String, String, Integer, Integer, Boolean>> relacionsSTB = dataService.getAllRelacionsClientEpisodiLikes();
 
@@ -292,9 +270,9 @@ public class ResourcesFacade {
             if(client == null) System.out.println("Client no trobat");
             else {
                 if (valor.equals("true")) {
-                    client.addLike(imUBCataleg, nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), 1.0f);
+                    modelFacade.valorarContingut(nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), nomClient, ValorType.VALORAR_PER_LIKES.toString(), "1");
                 } else if (valor.equals("false")) {
-                    client.addLike(imUBCataleg, nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), 0.0f);
+                    modelFacade.valorarContingut(nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), nomClient, ValorType.VALORAR_PER_LIKES.toString(), "0");
                 }
             }
         }

@@ -1,6 +1,5 @@
 package ub.edu.view;
 
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import ub.edu.controller.Controller;
 

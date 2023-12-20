@@ -49,10 +49,7 @@ public class Parell <T, V>{
         } else if (!element1.equals(other.element2))
             return false;
         if (element2 == null) {
-            if (other.element2 != null)
-                return false;
-        } else if (!element2.equals(other.element2))
-            return false;
-        return true;
+            return other.element2 == null;
+        } else return element2.equals(other.element2);
     }
 }

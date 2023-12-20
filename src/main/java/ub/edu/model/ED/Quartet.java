@@ -64,10 +64,7 @@ public class Quartet <T, V, K, Z>{
         } else if (!element3.equals(other.element3))
             return false;
         if (element4 == null) {
-            if (other.element4 != null)
-                return false;
-        } else if (!element4.equals(other.element4))
-            return false;
-        return true;
+            return other.element4 == null;
+        } else return element4.equals(other.element4);
     }
 }

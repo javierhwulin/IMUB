@@ -3,15 +3,11 @@ package ub.edu.resources.service;
 import ub.edu.model.*;
 import ub.edu.model.ED.*;
 import ub.edu.model.cataleg.*;
-import ub.edu.resources.dao.*;
 import ub.edu.resources.dao.entities.*;
 import ub.edu.resources.dao.relationships.*;
 
 import java.util.List;
 import java.util.Optional;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 public class DataService {

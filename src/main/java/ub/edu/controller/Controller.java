@@ -13,17 +13,13 @@ public class Controller  {
 
     private final ModelFacade modelFacade;
 
-    private final imUBCataleg imubCataleg;
-
-    private final imUBClients imubClients;
-
     private final SessionMemory sessionMemory;
 
     private final ViewMemory viewMemory;
 
     public Controller() {
-        imubCataleg = new imUBCataleg();
-        imubClients = new imUBClients();
+        imUBCataleg imubCataleg = new imUBCataleg();
+        imUBClients imubClients = new imUBClients();
 
         sessionMemory = new SessionMemory();
         viewMemory = new ViewMemory();

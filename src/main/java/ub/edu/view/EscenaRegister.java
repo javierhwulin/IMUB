@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -15,6 +14,7 @@ import ub.edu.model.StatusType;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class EscenaRegister extends Escena {
@@ -67,8 +67,8 @@ public class EscenaRegister extends Escena {
             cell.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
                 cell.getItem().checkProperty().set(!cell.getItem().checkProperty().get());
                 StringBuilder sb = new StringBuilder();
-                comboBox_register_comunitat.getItems().filtered(f-> f!=null).filtered(f-> f.getCheck()).forEach(p -> {
-                    sb.append("; "+p.getItem().get("nom"));
+                comboBox_register_comunitat.getItems().filtered(Objects::nonNull).filtered(ComboBoxItemWrap::getCheck).forEach(p -> {
+                    sb.append("; ").append(p.getItem().get("nom"));
                 });
                 final String string = sb.toString();
                 comboBox_register_comunitat.setPromptText(string.substring(Integer.min(2, string.length())));
@@ -89,7 +89,7 @@ public class EscenaRegister extends Escena {
         String pwd = registre_pwd.getText();
         String pwd_repeat = registre_pwd_repeat.getText();
 
-        if (correu==null || correu.equals("") || pwd==null || pwd.equals("") || !pwd.equals(pwd_repeat)) {
+        if (correu==null || correu.isEmpty() || pwd==null || pwd.isEmpty() || !pwd.equals(pwd_repeat)) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setAlertType(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -107,7 +107,7 @@ public class EscenaRegister extends Escena {
                 .collect(Collectors.toList());
 
         // Comprobar el número de comunidades seleccionadas
-        if (selectedComunities.size() < 1 || selectedComunities.size() > 5) {
+        if (selectedComunities.isEmpty() || selectedComunities.size() > 5) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Selección de Comunidad Incorrecta");
             alert.setHeaderText("Error en la selección de comunidades");
@@ -145,19 +145,16 @@ public class EscenaRegister extends Escena {
             alert.setHeaderText("Registre exitòs");
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             stage.getIcons().add(new Image("/ub/edu/static-resources/CONFIRMATION.png"));
-            alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
-                @Override
-                public void handle(DialogEvent dialogEvent) {
-                    //System.out.println(alert.getResult());
-                    String resu_ButtonData = String.valueOf(alert.getResult().getButtonData());
-                    if(resu_ButtonData.equals("OK_DONE")){
-                        //boton aceptar
-                        event_goLogin(correu);
+            alert.setOnCloseRequest(dialogEvent -> {
+                //System.out.println(alert.getResult());
+                String resu_ButtonData = String.valueOf(alert.getResult().getButtonData());
+                if(resu_ButtonData.equals("OK_DONE")){
+                    //boton aceptar
+                    event_goLogin(correu);
 
-                    }else{
-                        //boton cancelar
-                        //no hacer nada, nos quedamos donde ya estamos
-                    }
+                }else{
+                    //boton cancelar
+                    //no hacer nada, nos quedamos donde ya estamos
                 }
             });
         }

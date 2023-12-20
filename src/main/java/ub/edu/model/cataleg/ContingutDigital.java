@@ -19,20 +19,20 @@ public class ContingutDigital {
      String estrena;
     public ContingutDigital(String titol) {
         this.titol = titol;
-        llistaTematiques = new ArrayList<Tematica>();
+        llistaTematiques = new ArrayList<>();
 
     }
     public ContingutDigital(String titol, int anyPrimeraEmissio) {
         this.titol = titol;
         this.anyPrimeraEmissio = anyPrimeraEmissio;
-        llistaTematiques = new ArrayList<Tematica>();
+        llistaTematiques = new ArrayList<>();
     }
 
     public ContingutDigital(String titol,int anyPrimeraEmissio,  String descripcio) {
         this.titol = titol;
         this.descripcio = descripcio;
         this.anyPrimeraEmissio = anyPrimeraEmissio;
-        llistaTematiques = new ArrayList<Tematica>();
+        llistaTematiques = new ArrayList<>();
     }
 
     public String getNom() {

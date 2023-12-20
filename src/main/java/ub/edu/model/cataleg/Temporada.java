@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Temporada {
-    private int numTemporada;
+    private final int numTemporada;
     private String nomSerie;
-    private List<Episodi> llistaEpisodis;
+    private final List<Episodi> llistaEpisodis;
 
     public Temporada(String nomSerie, int i) {
         this.nomSerie = nomSerie;
         this.numTemporada = i;
-        llistaEpisodis = new ArrayList<Episodi>();
+        llistaEpisodis = new ArrayList<>();
     }
 
     public String getNomSerie() {

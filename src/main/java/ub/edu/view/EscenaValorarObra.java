@@ -4,9 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import ub.edu.controller.SessionMemory;
-
-import java.io.IOException;
 
 public class EscenaValorarObra extends Escena {
 
@@ -79,52 +76,43 @@ public class EscenaValorarObra extends Escena {
     }
 
     public void initObservers(){
-        radioButton_G1_Text1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                radioButton_Group1_Like.setDisable(false);
-                radioButton_Group1_Dislike.setDisable(false);
+        radioButton_G1_Text1.setOnAction(actionEvent -> {
+            radioButton_Group1_Like.setDisable(false);
+            radioButton_Group1_Dislike.setDisable(false);
 
-                textField_Group2.setDisable(true);
+            textField_Group2.setDisable(true);
 
-                radioButton_Group3_Text1.setDisable(true);
-                radioButton_Group3_Text2.setDisable(true);
-                radioButton_Group3_Text3.setDisable(true);
-                radioButton_Group3_Text4.setDisable(true);
-                radioButton_Group3_Text5.setDisable(true);
-            }
+            radioButton_Group3_Text1.setDisable(true);
+            radioButton_Group3_Text2.setDisable(true);
+            radioButton_Group3_Text3.setDisable(true);
+            radioButton_Group3_Text4.setDisable(true);
+            radioButton_Group3_Text5.setDisable(true);
         });
 
-        radioButton_G2_Text2.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                radioButton_Group1_Like.setDisable(true);
-                radioButton_Group1_Dislike.setDisable(true);
+        radioButton_G2_Text2.setOnAction(actionEvent -> {
+            radioButton_Group1_Like.setDisable(true);
+            radioButton_Group1_Dislike.setDisable(true);
 
-                textField_Group2.setDisable(false);
+            textField_Group2.setDisable(false);
 
-                radioButton_Group3_Text1.setDisable(true);
-                radioButton_Group3_Text2.setDisable(true);
-                radioButton_Group3_Text3.setDisable(true);
-                radioButton_Group3_Text4.setDisable(true);
-                radioButton_Group3_Text5.setDisable(true);
-            }
+            radioButton_Group3_Text1.setDisable(true);
+            radioButton_Group3_Text2.setDisable(true);
+            radioButton_Group3_Text3.setDisable(true);
+            radioButton_Group3_Text4.setDisable(true);
+            radioButton_Group3_Text5.setDisable(true);
         });
 
-        radioButton_G3_Text3.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                radioButton_Group1_Like.setDisable(true);
-                radioButton_Group1_Dislike.setDisable(true);
+        radioButton_G3_Text3.setOnAction(actionEvent -> {
+            radioButton_Group1_Like.setDisable(true);
+            radioButton_Group1_Dislike.setDisable(true);
 
-                textField_Group2.setDisable(true);
+            textField_Group2.setDisable(true);
 
-                radioButton_Group3_Text1.setDisable(false);
-                radioButton_Group3_Text2.setDisable(false);
-                radioButton_Group3_Text3.setDisable(false);
-                radioButton_Group3_Text4.setDisable(false);
-                radioButton_Group3_Text5.setDisable(false);
-            }
+            radioButton_Group3_Text1.setDisable(false);
+            radioButton_Group3_Text2.setDisable(false);
+            radioButton_Group3_Text3.setDisable(false);
+            radioButton_Group3_Text4.setDisable(false);
+            radioButton_Group3_Text5.setDisable(false);
         });
     }
 
@@ -169,50 +157,44 @@ public class EscenaValorarObra extends Escena {
 
         System.out.println("EscenaValorarObra:onButtonValorarClick ->  Valoració de tipus: "+ typeValorar+ " és: "+ valor);
         //TODO Pràctica 4: Afegir comprobacions als valors
-        if(typeValorar.equals("ValorPunts")){
-            if(valor.isEmpty()){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Valoració no vàlida");
-                alert.setContentText("El camp de valoració no pot estar buit");
-                alert.showAndWait();
-                return;
-            }
-            try{
-                int valoracio = Integer.parseInt(valor);
-                if(valoracio < 1 || valoracio > 10){
+        switch (typeValorar) {
+            case "ValorPunts" -> {
+                if (valor.isEmpty()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText("Valoració no vàlida");
-                    alert.setContentText("El camp de valoració ha de ser un valor entre 1 i 10");
+                    alert.setContentText("El camp de valoració no pot estar buit");
                     alert.showAndWait();
                     return;
                 }
-            }catch (NumberFormatException e){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Valoració no vàlida");
-                alert.setContentText("El camp de valoració ha de ser un valor numèric enter");
-                alert.showAndWait();
-                return;
+                try {
+                    int valoracio = Integer.parseInt(valor);
+                    if (valoracio < 1 || valoracio > 10) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Valoració no vàlida");
+                        alert.setContentText("El camp de valoració ha de ser un valor entre 1 i 10");
+                        alert.showAndWait();
+                        return;
+                    }
+                } catch (NumberFormatException e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Valoració no vàlida");
+                    alert.setContentText("El camp de valoració ha de ser un valor numèric enter");
+                    alert.showAndWait();
+                    return;
+                }
             }
-        }else if(typeValorar.equals("ValorEstrelles")){
-            if(valor.isEmpty()){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Valoració no vàlida");
-                alert.setContentText("El camp de valoració no pot estar buit");
-                alert.showAndWait();
-                return;
-            }
-        }else if(typeValorar.equals("ValorLikes")){
-            if(valor.isEmpty()){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Valoració no vàlida");
-                alert.setContentText("El camp de valoració no pot estar buit");
-                alert.showAndWait();
-                return;
+            case "ValorEstrelles", "ValorLikes" -> {
+                if (valor.isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Valoració no vàlida");
+                    alert.setContentText("El camp de valoració no pot estar buit");
+                    alert.showAndWait();
+                    return;
+                }
             }
         }
         //TODO Pràctica 4: Fer efectiva la valoració d'una pel.licula via crida al controlador

@@ -10,8 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
-
 
 public class DAORelacioTematicaPeliculaDB extends DAORelacioDB<Parell<String, String>> implements DAORelacioTematicaPelicula{
 

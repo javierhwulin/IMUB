@@ -7,10 +7,11 @@ import java.util.*;
 public class ModelFacade {
     private final imUBCataleg imubCataleg;
     private final imUBClients imubClients;
-
+    private final ValorFacade valorFacade;
     public ModelFacade(imUBCataleg imub, imUBClients imubc) {
         this.imubCataleg = imub;
         this.imubClients = imubc;
+        this.valorFacade = new ValorFacade(imubCataleg);
     }
 
     public StatusType loguejarSociStatus(String correu, String password) {
@@ -68,7 +69,7 @@ public class ModelFacade {
 
     public List<HashMap<Object, Object>> getAllContingutsDigitalsPerNom() {
         List<HashMap<Object, Object>> contingutsDisponibles = new ArrayList<>();
-        Integer id = 0;
+        int id = 0;
         for (ContingutDigital c : imubCataleg.getAllContingutsDigitals()) {
             HashMap<Object, Object> atributContingut = new HashMap<>();
             atributContingut.put("id", id++);
@@ -148,7 +149,6 @@ public class ModelFacade {
         atributsEpisodi.put("nom", e.getNom());
         atributsEpisodi.put("descripcio", e.getDescripcio());
         atributsEpisodi.put("durada", e.getDurada());
-        atributsEpisodi.put("valoracio", e.getValoracioInicial());
         atributsEpisodi.put("imatge", e.getUrl());
         atributsEpisodi.put("numTemporada", e.getNumTemporada());
         atributsEpisodi.put("numEpisodi", e.getNumEpisodi());
@@ -166,30 +166,23 @@ public class ModelFacade {
     // TODO: Pràctica 4: Cal valorar el contingut amb nom nomContingut amb la valoració valoracio (Like/Dislike, punts o estrelles) del client amb correu correu
         switch (valortype) {
             case "ValorLikes" -> {
-                Valorar strategy = new Valorar();
-                strategy.setValorarStrategy(new ValorarPerLikes());
                 if(valoracio.equals("Like") || valoracio.equals("1")) {
                     System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
-                    return strategy.executeValoracio(imubClients, imubCataleg, nomContingut, correu, 1);
+                    Client client = imubClients.getCarteraClients().find(correu);
+                    return valorFacade.valorarContingut(client, valortype, nomContingut, 1);
                 } else if(valoracio.equals("Dislike") || valoracio.equals("0")) {
                     System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
-                    return strategy.executeValoracio(imubClients, imubCataleg, nomContingut, correu, 0);
+                    Client client = imubClients.getCarteraClients().find(correu);
+                    return valorFacade.valorarContingut(client, valortype, nomContingut, 0);
                 } else {
                     System.out.println("Model Facade: valorarContingut -> valoració no vàlida");
                     return false;
                 }
             }
-            case "ValorPunts" -> {
-                Valorar strategy = new Valorar();
-                strategy.setValorarStrategy(new ValorarPerPunts());
+            case "ValorPunts", "ValorEstrelles" -> {
                 System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
-                return strategy.executeValoracio(imubClients, imubCataleg, nomContingut, correu, Integer.parseInt(valoracio));
-            }
-            case "ValorEstrelles" -> {
-                Valorar strategy = new Valorar();
-                strategy.setValorarStrategy(new ValorarPerEstrelles());
-                System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
-                return strategy.executeValoracio(imubClients, imubCataleg, nomContingut, correu, Integer.parseInt(valoracio));
+                Client client = imubClients.getCarteraClients().find(correu);
+                return valorFacade.valorarContingut(client, valortype, nomContingut, Float.parseFloat(valoracio));
             }
             default -> {
                 System.out.println("Model Facade: valorarContingut -> tipus de valoració no vàlida");
@@ -198,6 +191,33 @@ public class ModelFacade {
         }
     }
 
+    public boolean valorarContingut(String nomContingut, int numTemporada, int numEpisodi, String correu, String valortype, String valoracio) {
+        switch (valortype) {
+            case "ValorLikes" -> {
+                if(valoracio.equals("Like") || valoracio.equals("1")) {
+                    System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
+                    Client client = imubClients.getCarteraClients().find(correu);
+                    return valorFacade.valorarContingut(client, valortype, nomContingut, numTemporada, numEpisodi, 1);
+                } else if(valoracio.equals("Dislike") || valoracio.equals("0")) {
+                    System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
+                    Client client = imubClients.getCarteraClients().find(correu);
+                    return valorFacade.valorarContingut(client, valortype, nomContingut, numTemporada, numEpisodi, 0);
+                } else {
+                    System.out.println("Model Facade: valorarContingut -> valoració no vàlida");
+                    return false;
+                }
+            }
+            case "ValorPunts", "ValorEstrelles" -> {
+                System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
+                Client client = imubClients.getCarteraClients().find(correu);
+                return valorFacade.valorarContingut(client, valortype, nomContingut, numTemporada, numEpisodi, Float.parseFloat(valoracio));
+            }
+            default -> {
+                System.out.println("Model Facade: valorarContingut -> tipus de valoració no vàlida");
+                return false;
+            }
+        }
+    }
     public StatusType addToWishList(String nomContingut, String correu) {
         // TODO: Pràctica 4: Cal afegir el contingut nomContingut a la wishList del client amb correu correu
         System.out.println("Model Facade: addToWishList -> nomContingut: " + nomContingut + " correu: " + correu);
@@ -227,108 +247,26 @@ public class ModelFacade {
     }
 
     public List<HashMap<String, String>> TopList(String tipusContingut, String tipusValoracio, String tipusCalcul, int top) throws IllegalArgumentException {
-        List<HashMap<String, String>> contingutsTop = new ArrayList<>();
         // TO DO: Pràctica 4: Cal retornar els #top continguts de tipus tipusContingut amb la valoració tipusValoracio i el càlcul tipusCalcul
-        HashMap<String, Float> estrelles;
-        HashMap<String, Float> valoracions = new HashMap<>();
-        HashMap<String, Integer> nombresValoracions = new HashMap<>();
-        List<Client> clients = imubClients.getCarteraClients().getAll();
 
         System.out.println("Model Facade: TopList -> tipusContingut: " + tipusContingut + ", tipusValoracio: " + tipusValoracio + ", tipusCalcul: " + tipusCalcul + ", top: " + top);
         switch(tipusValoracio) {
             case "ValorLikes" -> {
-                for (Client client : clients) {
-                    if(tipusContingut.equals("Pelicula")) {
-                        estrelles = client.getAllValoracionsPelisPerLikes();
-                    } else if(tipusContingut.equals("Serie")) {
-                        estrelles = client.getAllValoracionsEpisodisPerLikes();
-                    } else {
-                        throw new IllegalArgumentException();
-                    }
-                    TotalValoracions(valoracions, nombresValoracions, estrelles);
-                }
-                CalculValoracions(tipusCalcul, top, contingutsTop, valoracions, nombresValoracions);
+                return valorFacade.TopLikeList(tipusContingut, tipusCalcul, top);
             }
             case "ValorPunts" -> {
-                for (Client client : clients) {
-                    if(tipusContingut.equals("Pelicula")) {
-                        estrelles = client.getAllValoracionsPelisPerPunts();
-                    } else if(tipusContingut.equals("Serie")) {
-                        estrelles = client.getAllValoracionsEpisodisPerPunts();
-                    } else {
-                        throw new IllegalArgumentException();
-                    }
-                    TotalValoracions(valoracions, nombresValoracions, estrelles);
-                }
-                CalculValoracions(tipusCalcul, top, contingutsTop, valoracions, nombresValoracions);
+                return valorFacade.TopPointList(tipusContingut, tipusCalcul, top);
             }
             case "ValorEstrelles" -> {
-                for (Client client : clients) {
-                    if(tipusContingut.equals("Pelicula")) {
-                        estrelles = client.getAllValoracionsPelisPerEstrelles();
-                    } else if(tipusContingut.equals("Serie")) {
-                        estrelles = client.getAllValoracionsEpisodisPerEstrelles();
-                    } else {
-                        throw new IllegalArgumentException();
-                    }
-                    TotalValoracions(valoracions, nombresValoracions, estrelles);
-                }
-                CalculValoracions(tipusCalcul, top, contingutsTop, valoracions, nombresValoracions);
+                return valorFacade.TopStarList(tipusContingut, tipusCalcul, top);
             }
             default -> {
                 System.out.println("Model Facade: TopList -> tipus de valoració no vàlida");
-                return contingutsTop;
-            }
-        }
-        return contingutsTop;
-    }
-
-    // Implementat TotalValoracions, CalculValoracions, SortTopValoracionsMap i SortTopValoracionsPromig per evitar duplicar codi a TopList
-    private void TotalValoracions(HashMap<String, Float> valoracions, HashMap<String, Integer> nombresValoracions, HashMap<String, Float> estrelles) {
-        for (String key : estrelles.keySet()) {
-            if (valoracions.containsKey(key)) {
-                valoracions.put(key, valoracions.get(key) + estrelles.get(key));
-                nombresValoracions.put(key, nombresValoracions.get(key) + 1);
-            } else {
-                valoracions.put(key, estrelles.get(key));
-                nombresValoracions.put(key, 1);
+                return null;
             }
         }
     }
 
-    private void CalculValoracions(String tipusCalcul, int top, List<HashMap<String, String>> contingutsTop, HashMap<String, Float> valoracions, HashMap<String, Integer> nombresValoracions) {
-        if(tipusCalcul.equals("ValoracioStrategyPromig")){
-            float valorPromig;
-            for(String key : valoracions.keySet()){
-                valorPromig = (float) valoracions.get(key) / nombresValoracions.get(key);
-                valoracions.put(key, valorPromig);
-            }
-        }
-        SortTopValoracionsMap(top, contingutsTop, valoracions);
-    }
-
-    private void SortTopValoracionsMap(int top, List<HashMap<String, String>> contingutsTop, HashMap<String, Float> valoracions) {
-        List<Map.Entry<String, Float>> entryList = new ArrayList<>(valoracions.entrySet());
-        entryList.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));
-
-        if(entryList.isEmpty()){
-            System.out.println("Model Facade: TopList -> no hi ha continguts");
-        }else if(entryList.size() < top) {
-            for (Map.Entry<String, Float> stringFloatEntry : entryList) {
-                HashMap<String, String> atributContingut = new HashMap<>();
-                atributContingut.put("nom", stringFloatEntry.getKey());
-                atributContingut.put("valor", String.valueOf(stringFloatEntry.getValue()));
-                contingutsTop.add(atributContingut);
-            }
-        }else{
-            for (int i = 0; i < top; i++) {
-                HashMap<String, String> atributContingut = new HashMap<>();
-                atributContingut.put("nom", entryList.get(i).getKey());
-                atributContingut.put("valor", String.valueOf(entryList.get(i).getValue()));
-                contingutsTop.add(atributContingut);
-            }
-        }
-    }
     public List<HashMap<Object, Object>> getAllPelicules() {
         List<HashMap<Object, Object>> contingutsDisponibles = new ArrayList<>();
         int id = 0;

@@ -6,18 +6,18 @@ import java.util.List;
 
 public class Comunitat {
 
-    private List<Tematica> tematiques;
+    private final List<Tematica> tematiques;
 
     private List<ContingutDigital> communitylist;
     private String nomComunitat;
-    private String descripcioComunitat;
+    private final String descripcioComunitat;
 
     public Comunitat(String nomComunitat, String descripcioComunitat) {
         this.nomComunitat = nomComunitat;
         this.descripcioComunitat = descripcioComunitat;
-        tematiques = new ArrayList<Tematica>();
+        tematiques = new ArrayList<>();
 
-        communitylist = new ArrayList<ContingutDigital>();
+        communitylist = new ArrayList<>();
     }
 
     public String getNom() {

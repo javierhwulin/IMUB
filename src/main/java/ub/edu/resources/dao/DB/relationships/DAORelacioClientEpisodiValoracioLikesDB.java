@@ -1,6 +1,5 @@
 package ub.edu.resources.dao.DB.relationships;
 
-import ub.edu.model.ED.Parell;
 import ub.edu.model.ED.Quintet;
 import ub.edu.resources.dao.relationships.DAORelacioClientEpisodiValoracioLikes;
 

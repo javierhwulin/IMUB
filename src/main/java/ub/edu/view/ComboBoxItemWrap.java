@@ -7,8 +7,8 @@ import javafx.beans.property.SimpleObjectProperty;
 
 public class ComboBoxItemWrap<T> {
 
-    private BooleanProperty check = new SimpleBooleanProperty(false);
-    private ObjectProperty<T> item = new SimpleObjectProperty<>();
+    private final BooleanProperty check = new SimpleBooleanProperty(false);
+    private final ObjectProperty<T> item = new SimpleObjectProperty<>();
 
     ComboBoxItemWrap() {
     }

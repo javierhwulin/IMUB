@@ -13,10 +13,10 @@ public class imUBCataleg {
 
     public imUBCataleg(){
 
-        llistaSeries = new ArrayList<Serie>();
-        llistaPelicules = new ArrayList<Pelicula>();
-        llistaTematiques = new ArrayList<Tematica>();
-        llistaComunitats = new ArrayList<Comunitat>();
+        llistaSeries = new ArrayList<>();
+        llistaPelicules = new ArrayList<>();
+        llistaTematiques = new ArrayList<>();
+        llistaComunitats = new ArrayList<>();
     }
     // Creador el ImUB
 

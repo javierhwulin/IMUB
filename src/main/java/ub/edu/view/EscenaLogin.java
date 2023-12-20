@@ -1,6 +1,5 @@
 package ub.edu.view;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -20,7 +19,7 @@ public class EscenaLogin extends Escena {
     private String correu;
 
     public void start(){
-        if(correu!=null && !correu.equals("")){
+        if(correu!=null && !correu.isEmpty()){
             //caso que hemos registrado correctamente una nueva persona
             //poner su email pero la pwd a null para escribirla nosotros
             this.login_correu.setText(correu);

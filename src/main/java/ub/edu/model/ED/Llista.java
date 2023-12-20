@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Llista<T> {
-    private List<T> elements;
+    private final List<T> elements;
 
     public Llista() {
         this.elements = new ArrayList<>();

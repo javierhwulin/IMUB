@@ -2,7 +2,6 @@ package ub.edu.resources.dao.DB.entities;
 
 import ub.edu.model.cataleg.Temporada;
 import ub.edu.resources.dao.entities.DAOTemporada;
-import ub.edu.model.ED.Parell;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

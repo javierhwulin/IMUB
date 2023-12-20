@@ -220,7 +220,7 @@ public class EscenaMain extends Escena  {
 
 
         System.out.println(listaObres.toString());
-        if(listaObres == null || listaObres.isEmpty()){
+        if(listaObres.isEmpty()){
             return;
         }
         List<Node> obresPaneChildren = contingut_audiovisual_pane.getChildren();
@@ -292,11 +292,7 @@ public class EscenaMain extends Escena  {
     }
 
     public void observable_comboBox_main_comunitat(){
-        comboBox_main_comunitat.valueProperty().addListener(new ChangeListener<String>() {
-            @Override public void changed(ObservableValue classObject, String oldValue, String newValue) {
-                controller.getSessionMemory().setNomComunitat(newValue);
-            }
-        });
+        comboBox_main_comunitat.valueProperty().addListener((ChangeListener<String>) (classObject, oldValue, newValue) -> controller.getSessionMemory().setNomComunitat(newValue));
     }
 
     public void popularComboBoxTipus() throws Exception {
@@ -306,24 +302,22 @@ public class EscenaMain extends Escena  {
         comboBox_main_tipus.getItems().add(2,"Serie");
 
         //añadir el listener del combobox
-        comboBox_main_tipus.valueProperty().addListener(new ChangeListener<String>() {
-            //OPCIÓN-1 -> asignar listener para que se ejecute cuando detecte el cambio
-            @Override public void changed(ObservableValue classObject, String oldValue, String newValue) {
-                System.out.println("Filtrar Per Tipus: "+newValue);
-                //TODO: extensión de popular la lista de Peliculas
-                switch (newValue) {
-                    case "Pelicula":
-                        controller.getViewMemory().setFilterTypeObraAudioVisual("Pelicula");
-                        popularObresAudiovisualsPerNom();
-                        break;
-                    case "Serie":
-                        controller.getViewMemory().setFilterTypeObraAudioVisual("Serie");
-                        popularObresAudiovisualsPerNom();
-                        break;
-                    default:
-                        controller.getViewMemory().setFilterTypeObraAudioVisual("ALL");
-                        popularObresAudiovisualsPerNom();
-                }
+        //OPCIÓN-1 -> asignar listener para que se ejecute cuando detecte el cambio
+        comboBox_main_tipus.valueProperty().addListener((ChangeListener<String>) (classObject, oldValue, newValue) -> {
+            System.out.println("Filtrar Per Tipus: "+newValue);
+            //TODO: extensión de popular la lista de Peliculas
+            switch (newValue) {
+                case "Pelicula":
+                    controller.getViewMemory().setFilterTypeObraAudioVisual("Pelicula");
+                    popularObresAudiovisualsPerNom();
+                    break;
+                case "Serie":
+                    controller.getViewMemory().setFilterTypeObraAudioVisual("Serie");
+                    popularObresAudiovisualsPerNom();
+                    break;
+                default:
+                    controller.getViewMemory().setFilterTypeObraAudioVisual("ALL");
+                    popularObresAudiovisualsPerNom();
             }
         });
 
@@ -342,38 +336,36 @@ public class EscenaMain extends Escena  {
                 }
             }
         });
-        comboBox_TipusTop10.valueProperty().addListener(new ChangeListener<String>() {
-            @Override public void changed(ObservableValue classObject, String oldValue, String newValue) {
-                System.out.println("Filtrar Per Tipus: "+newValue);
-                //TODO: extensión de popular el Top10 por Top10 de Peliculas segons el tipus Pel·lícules o Sèries
-                tableTop10Valorades.getItems().clear();
+        comboBox_TipusTop10.valueProperty().addListener((ChangeListener<String>) (classObject, oldValue, newValue) -> {
+            System.out.println("Filtrar Per Tipus: "+newValue);
+            //TODO: extensión de popular el Top10 por Top10 de Peliculas segons el tipus Pel·lícules o Sèries
+            tableTop10Valorades.getItems().clear();
 
-                String filterType = controller.getViewMemory().getFilterTypeValue();
-                String filterStrategy = controller.getViewMemory().getFilterStrategyValue();
-                String tipusContingut;
-                if(newValue.equals("Pelicula")){
-                    tipusContingut = "Pelicula";
-                    controller.getViewMemory().setFilterTypeTop("Pelicula");
-                }else if(newValue.equals("Serie")){
-                    tipusContingut = "Serie";
-                    controller.getViewMemory().setFilterTypeTop("Serie");
-                }else{
-                    tipusContingut = "Pelicula";
-                    controller.getViewMemory().setFilterTypeTop("Pelicula");
-                }
-                List<HashMap<String, String>> listaObres;
-                if(filterType.equals("ValorPunts")) {
-                    listaObres = controller.top10(tipusContingut, filterType, filterStrategy);
-                }else{
-                    listaObres = controller.top10(tipusContingut, filterType, "ValoracioStrategyAbsolut");
-                }
+            String filterType = controller.getViewMemory().getFilterTypeValue();
+            String filterStrategy = controller.getViewMemory().getFilterStrategyValue();
+            String tipusContingut;
+            if(newValue.equals("Pelicula")){
+                tipusContingut = "Pelicula";
+                controller.getViewMemory().setFilterTypeTop("Pelicula");
+            }else if(newValue.equals("Serie")){
+                tipusContingut = "Serie";
+                controller.getViewMemory().setFilterTypeTop("Serie");
+            }else{
+                tipusContingut = "Pelicula";
+                controller.getViewMemory().setFilterTypeTop("Pelicula");
+            }
+            List<HashMap<String, String>> listaObres;
+            if(filterType.equals("ValorPunts")) {
+                listaObres = controller.top10(tipusContingut, filterType, filterStrategy);
+            }else{
+                listaObres = controller.top10(tipusContingut, filterType, "ValoracioStrategyAbsolut");
+            }
 
-                for (HashMap<String, String> obra : listaObres) {
-                    String nom = obra.get("nom");
-                    float valor = Float.parseFloat(obra.get("valor"));
-                    tableTop10Valorades.getItems().add(
-                            new DataTop(nom, (int) valor));
-                }
+            for (HashMap<String, String> obra : listaObres) {
+                String nom = obra.get("nom");
+                float valor = Float.parseFloat(obra.get("valor"));
+                tableTop10Valorades.getItems().add(
+                        new DataTop(nom, (int) valor));
             }
         });
     }
@@ -391,58 +383,56 @@ public class EscenaMain extends Escena  {
         }
 
         //añadir el listener del combobox
-        comboBox_main_tematica.valueProperty().addListener(new ChangeListener<String>() {
-            //OPCIÓN-1 -> asignar listener para que se ejecute cuando detecte el cambio
-            @Override public void changed(ObservableValue classObject, String oldValue, String newValue) {
-                System.out.println("TODO: Filtrar continguts por temàtica: "+newValue);
-                //TODO: extensión de popular la lista de continguts per temàtica
-                //Esborrem tots el continguts que hi havia al pane
-                contingut_audiovisual_pane.getChildren().clear();
+        //OPCIÓN-1 -> asignar listener para que se ejecute cuando detecte el cambio
+        comboBox_main_tematica.valueProperty().addListener((ChangeListener<String>) (classObject, oldValue, newValue) -> {
+            System.out.println("TODO: Filtrar continguts por temàtica: "+newValue);
+            //TODO: extensión de popular la lista de continguts per temàtica
+            //Esborrem tots el continguts que hi havia al pane
+            contingut_audiovisual_pane.getChildren().clear();
 
-                List<HashMap<Object,Object>> listaObres;
-                if(newValue.equals("Filtrar per Temàtica")){
-                    if(controller.getViewMemory().getFilterTypeObraAudioVisual().equals("Pelicula")) {
-                        listaObres = controller.getAllPelicules();
-                    }else if(controller.getViewMemory().getFilterTypeObraAudioVisual().equals("Serie")) {
-                        listaObres = controller.getAllSeries();
-                    }else {
-                        listaObres = controller.getAllContingutsDigitalsPerNom();
-                    }
+            List<HashMap<Object,Object>> listaObres;
+            if(newValue.equals("Filtrar per Temàtica")){
+                if(controller.getViewMemory().getFilterTypeObraAudioVisual().equals("Pelicula")) {
+                    listaObres = controller.getAllPelicules();
+                }else if(controller.getViewMemory().getFilterTypeObraAudioVisual().equals("Serie")) {
+                    listaObres = controller.getAllSeries();
+                }else {
+                    listaObres = controller.getAllContingutsDigitalsPerNom();
+                }
+            }else{
+                if(controller.getViewMemory().getFilterTypeObraAudioVisual().equals("Pelicula")) {
+                    listaObres = controller.getAllPeliculesPerTematica(newValue);
+                }else if(controller.getViewMemory().getFilterTypeObraAudioVisual().equals("Serie")) {
+                    listaObres = controller.getAllSeriesPerTematica(newValue);
                 }else{
-                    if(controller.getViewMemory().getFilterTypeObraAudioVisual().equals("Pelicula")) {
-                        listaObres = controller.getAllPeliculesPerTematica(newValue);
-                    }else if(controller.getViewMemory().getFilterTypeObraAudioVisual().equals("Serie")) {
-                        listaObres = controller.getAllSeriesPerTematica(newValue);
-                    }else{
-                        listaObres = controller.getAllContingutsDigitalsPerTematica(newValue);
-                    }
+                    listaObres = controller.getAllContingutsDigitalsPerTematica(newValue);
                 }
-                if(listaObres == null || listaObres.isEmpty()){
-                    return;
-                }
-                List<Node> obresPaneChildren = contingut_audiovisual_pane.getChildren();
-
-                double width = obra_audiovisual_btn.getWidth();
-                double height = obra_audiovisual_btn.getHeight();
-                double layoutX = obra_audiovisual_btn.getLayoutX();
-                double layoutY = obra_audiovisual_btn.getLayoutY();
-                //Instanciem un botó per cada obra audiovisual
-
-                String text;
-                Button new_btn;
-                String nom;
-                for (HashMap<Object,Object> obra:listaObres) {
-                    nom = (String) obra.get("nom");
-                    text = nom;
-                    new_btn = createObraAudiovisualButton(nom, text, width, height, layoutX, layoutY);
-                    obresPaneChildren.add(new_btn);
-                    layoutY += ESPAI_ENTRE_BOTONS;
-                }
-                //Actualitzem la mida del pane que conté els botons perque es pugui fer scroll cap abaix si hi ha més botons dels que caben al pane
-                contingut_audiovisual_pane.setPrefHeight(layoutY);
-                //Esborrem excursio_btn, que l'utilitzavem únicament com a referència per la mida dels botons
-                obresPaneChildren.remove(obra_audiovisual_btn);
             }
+            if(listaObres == null || listaObres.isEmpty()){
+                return;
+            }
+            List<Node> obresPaneChildren = contingut_audiovisual_pane.getChildren();
+
+            double width = obra_audiovisual_btn.getWidth();
+            double height = obra_audiovisual_btn.getHeight();
+            double layoutX = obra_audiovisual_btn.getLayoutX();
+            double layoutY = obra_audiovisual_btn.getLayoutY();
+            //Instanciem un botó per cada obra audiovisual
+
+            String text;
+            Button new_btn;
+            String nom1;
+            for (HashMap<Object,Object> obra:listaObres) {
+                nom1 = (String) obra.get("nom");
+                text = nom1;
+                new_btn = createObraAudiovisualButton(nom1, text, width, height, layoutX, layoutY);
+                obresPaneChildren.add(new_btn);
+                layoutY += ESPAI_ENTRE_BOTONS;
+            }
+            //Actualitzem la mida del pane que conté els botons perque es pugui fer scroll cap abaix si hi ha més botons dels que caben al pane
+            contingut_audiovisual_pane.setPrefHeight(layoutY);
+            //Esborrem excursio_btn, que l'utilitzavem únicament com a referència per la mida dels botons
+            obresPaneChildren.remove(obra_audiovisual_btn);
         });
     }
     public void onButtonIzqResetFiltresClick(){

@@ -5,7 +5,6 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import ub.edu.model.StatusType;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -91,7 +90,7 @@ public class EscenaSerieDetalls extends Escena{
 
     public void onBtntemporadesViewAddClick() throws Exception {
         //Nova finestra
-        Escena escena = EscenaFactory.INSTANCE.creaEscena("temporadesDetalls-view", "Temporades: "+String.valueOf(this.nom_contingut_audiovisual));
+        Escena escena = EscenaFactory.INSTANCE.creaEscena("temporadesDetalls-view", "Temporades: "+this.nom_contingut_audiovisual);
         EscenaTemporadesDetalls escenaTemporadesDetalls = ((EscenaTemporadesDetalls)escena);
         escenaTemporadesDetalls.setController(controller);
         escenaTemporadesDetalls.start();

@@ -77,10 +77,7 @@ public class Quintet<T, U, V, W, X> {
         } else if (!element4.equals(other.element4))
             return false;
         if (element5 == null) {
-            if (other.element5 != null)
-                return false;
-        } else if (!element5.equals(other.element5))
-            return false;
-        return true;
+            return other.element5 == null;
+        } else return element5.equals(other.element5);
     }
 }

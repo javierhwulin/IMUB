@@ -2,15 +2,12 @@ package ub.edu.view;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import ub.edu.model.StatusType;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Optional;
 
 
 public class EscenaPelliculaDetalls extends Escena{
@@ -72,7 +69,7 @@ public class EscenaPelliculaDetalls extends Escena{
         controller.getSessionMemory().setTipusObra("Pelicula");
         controller.getSessionMemory().setNomObra(this.nom_contingut_audiovisual);
         //Nova finestra
-        Escena escena = EscenaFactory.INSTANCE.creaEscena("valorarObra-view", "Valorar Contingut Audiovisual: "+String.valueOf(this.nom_contingut_audiovisual));
+        Escena escena = EscenaFactory.INSTANCE.creaEscena("valorarObra-view", "Valorar Contingut Audiovisual: "+this.nom_contingut_audiovisual);
         EscenaValorarObra escenaValorarObra = ((EscenaValorarObra)escena);
         escenaValorarObra.setController(controller);
         escenaValorarObra.start();

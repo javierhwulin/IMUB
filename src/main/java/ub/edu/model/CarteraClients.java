@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CarteraClients {
-    private List<Client> llista;
+    private final List<Client> llista;
     
     public CarteraClients() {
         llista = new ArrayList<>();
