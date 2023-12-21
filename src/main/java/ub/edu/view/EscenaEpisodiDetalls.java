@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 
 public class EscenaEpisodiDetalls extends Escena{
+    private static final String TIPUS_ACTUALIZADOR = "top10";
     public Text nomEpisodi_text;
     public Text data_nom_Serie;
     public Text data_temporada;
@@ -22,8 +23,6 @@ public class EscenaEpisodiDetalls extends Escena{
     public javafx.scene.image.ImageView data_image_image;
 
     public Button valorar_btn;
-
-
     private String correu_persona;
     private String id_contingut_audiovisual;
 
@@ -104,6 +103,6 @@ public class EscenaEpisodiDetalls extends Escena{
         EscenaValorarObra escenaValorarObra = ((EscenaValorarObra)escena);
         escenaValorarObra.setController(controller);
         escenaValorarObra.start();
+        escenaValorarObra.updater.subscribe(TIPUS_ACTUALIZADOR, (EscenaMain)controller.getViewMemory().getMainScene());
     }
-
 }

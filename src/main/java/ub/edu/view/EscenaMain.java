@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class EscenaMain extends Escena  {
+public class EscenaMain extends Escena implements UpdateListeners {
     private static final double ESPAI_ENTRE_BOTONS = 30;
 
     public Button obra_audiovisual_btn;
@@ -48,9 +48,11 @@ public class EscenaMain extends Escena  {
     public ComboBox comboBox_main_tipus;
     public ComboBox comboBox_main_tematica;
 
+    private MainListener mainListener;
 
     public void start() throws Exception {
         String correu = controller.getSessionMemory().getCorreuPersona();
+        mainListener = new MainListener(this);
         initViewMemory();
         initStartMain();
         assignarTextPrincipal_Correu_i_Comunitat(correu);
@@ -62,10 +64,9 @@ public class EscenaMain extends Escena  {
         popularTopDeuValorades();
         popularWishList();
     }
-
-    public void reload() {
-        popularTopDeuValorades();
-        popularWishList();
+    @Override
+    public void update(String updateType) throws IllegalArgumentException {
+        mainListener.update(updateType);
     }
 
     public void initStartMain(){
@@ -124,7 +125,7 @@ public class EscenaMain extends Escena  {
         }
     }
 
-    private void popularWishList() {
+    public void popularWishList() {
         nomColumnWishList.setCellValueFactory(new PropertyValueFactory<DataWish, String>("nom"));
 
         List<HashMap<Object, Object>> listaObres = controller.getWishList(this.controller.getSessionMemory().getCorreuPersona());
@@ -158,7 +159,7 @@ public class EscenaMain extends Escena  {
             return value.get();
         }
     }
-    private void popularTopDeuValorades() {
+    public void popularTopDeuValorades() {
         //Borrar todos los elementos existentes en la TableView antes de popularla de nuevo con los nuevos datos.
         tableTop10Valorades.getItems().clear();
 
@@ -293,14 +294,15 @@ public class EscenaMain extends Escena  {
             escenaPelliculaDetalls.setController(controller);
             this.controller.getSessionMemory().setNomPelicula(nom);
             escenaPelliculaDetalls.start();
+            escenaPelliculaDetalls.updater.subscribe("wishList", this);
         } else {
             Escena escena = EscenaFactory.INSTANCE.creaEscena("serieDetalls-view", "Detalls serie "+nom);
             EscenaSerieDetalls escenaSerieDetalls = ((EscenaSerieDetalls)escena);
             escenaSerieDetalls.setController(controller);
             this.controller.getSessionMemory().setNomSerie(nom);
             escenaSerieDetalls.start();
+            escenaSerieDetalls.updater.subscribe("wishList", this);
         }
-
     }
 
     public void observable_comboBox_main_comunitat(){
@@ -367,8 +369,6 @@ public class EscenaMain extends Escena  {
                 controller.getViewMemory().setFilterTypeTop(ContingutType.Pelicula.toString());
             }
             List<HashMap<String, String>> listaObres;
-            System.out.println("ContingutType: "+ ContingutType.valueOf(tipusContingut) + " FilterType: "+ ValorType.valueOf(filterType) + " FilterStrategy: "+ ValorType.valueOf(filterStrategy));
-            System.out.println("FilterType: "+ filterType + " FilterStrategy: "+ filterStrategy);
             if(filterType.equals("VALORAR_PER_PUNTS")) {
                 listaObres = controller.top10(ContingutType.valueOf(tipusContingut), ValorType.valueOf(filterType), ValorType.valueOf(filterStrategy));
             }else{
@@ -399,7 +399,7 @@ public class EscenaMain extends Escena  {
         //añadir el listener del combobox
         //OPCIÓN-1 -> asignar listener para que se ejecute cuando detecte el cambio
         comboBox_main_tematica.valueProperty().addListener((ChangeListener<String>) (classObject, oldValue, newValue) -> {
-            System.out.println("TODO: Filtrar continguts por temàtica: "+newValue);
+            System.out.println("Filtrar continguts por temàtica: "+newValue);
             //TODO: extensión de popular la lista de continguts per temàtica
             //Esborrem tots el continguts que hi havia al pane
             contingut_audiovisual_pane.getChildren().clear();

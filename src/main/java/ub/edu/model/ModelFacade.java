@@ -167,11 +167,9 @@ public class ModelFacade {
         switch (valortype) {
             case VALORAR_PER_LIKES -> {
                 if(valoracio.equals("Like") || valoracio.equals("1")) {
-                    System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
                     Client client = imubClients.getCarteraClients().find(correu);
                     return valorFacade.valorarContingut(client, valortype, nomContingut, 1);
                 } else if(valoracio.equals("Dislike") || valoracio.equals("0")) {
-                    System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
                     Client client = imubClients.getCarteraClients().find(correu);
                     return valorFacade.valorarContingut(client, valortype, nomContingut, 0);
                 } else {
@@ -180,7 +178,6 @@ public class ModelFacade {
                 }
             }
             case VALORAR_PER_PUNTS, VALORAR_PER_ESTRELLES -> {
-                System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
                 Client client = imubClients.getCarteraClients().find(correu);
                 return valorFacade.valorarContingut(client, valortype, nomContingut, Float.parseFloat(valoracio));
             }
@@ -195,11 +192,9 @@ public class ModelFacade {
         switch (valortype) {
             case VALORAR_PER_LIKES -> {
                 if(valoracio.equals("Like") || valoracio.equals("1")) {
-                    System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
                     Client client = imubClients.getCarteraClients().find(correu);
                     return valorFacade.valorarContingut(client, valortype, nomContingut, numTemporada, numEpisodi, 1);
                 } else if(valoracio.equals("Dislike") || valoracio.equals("0")) {
-                    System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
                     Client client = imubClients.getCarteraClients().find(correu);
                     return valorFacade.valorarContingut(client, valortype, nomContingut, numTemporada, numEpisodi, 0);
                 } else {
@@ -208,7 +203,6 @@ public class ModelFacade {
                 }
             }
             case VALORAR_PER_PUNTS, VALORAR_PER_ESTRELLES -> {
-                System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
                 Client client = imubClients.getCarteraClients().find(correu);
                 return valorFacade.valorarContingut(client, valortype, nomContingut, numTemporada, numEpisodi, Float.parseFloat(valoracio));
             }
@@ -226,21 +220,23 @@ public class ModelFacade {
     }
 
     public List<HashMap<Object, Object>> getWishList(String correu, int quantitat) {
-        List<HashMap<Object, Object>> wishList = new ArrayList<>();
         // TODO: Pràctica 4: Cal retornar els continguts de la wishList del client amb correu correu
-        System.out.println("Model Facade: getWishList -> correu: " + correu + " quantitat de wishes: " + quantitat);
+        System.out.println("Model Facade: getWishList -> correu: " + correu + " màxim quantitat de wishes: " + quantitat);
         List<ContingutDigital> contingutDigitals = imubClients.getCarteraClients().find(correu).getWishList();
         if(contingutDigitals.isEmpty()) {
             System.out.println("Model Facade: getWishList -> no hi ha continguts");
         }
         List<HashMap<Object, Object>> contingutsDisponibles = new ArrayList<>();
-        int id = 0;
+        int id = 0; int quantitatContinguts = 0;
         for (ContingutDigital c : contingutDigitals) {
-            HashMap<Object, Object> atributContingut = new HashMap<>();
-            atributContingut.put("id", id++);
-            String nom = c.getNom();
-            atributContingut.put("nom", nom);
-            contingutsDisponibles.add(atributContingut);
+            if(quantitatContinguts != quantitat) {
+                HashMap<Object, Object> atributContingut = new HashMap<>();
+                atributContingut.put("id", id++);
+                String nom = c.getNom();
+                atributContingut.put("nom", nom);
+                contingutsDisponibles.add(atributContingut);
+                quantitatContinguts++;
+            }
         }
 
         return contingutsDisponibles;

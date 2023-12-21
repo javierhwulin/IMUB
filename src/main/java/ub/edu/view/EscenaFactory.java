@@ -36,26 +36,29 @@ public enum EscenaFactory {
         newStage.setScene(newScene);
 
         //Quan tanquem la finestra main, es tanca l'aplicació.
-        newStage.setOnCloseRequest(event -> {
-            event.consume();
+        if(escena instanceof EscenaMain) {
+            newStage.setOnCloseRequest(event -> {
+                event.consume();
 
-            // Mostrar una advertencia antes de cerrar
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Sortir de l'aplicació");
-            alert.setHeaderText("Estas segur que vols sortir de l'aplicació?");
-            alert.setContentText("Pots perdre dades si no has guardat!");
-            alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+                // Mostrar una advertencia antes de cerrar
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Sortir de l'aplicació");
+                alert.setHeaderText("Estas segur que vols sortir de l'aplicació?");
+                alert.setContentText("Pots perdre dades si no has guardat!");
+                alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
 
-            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-            stage.getIcons().add(new Image("/ub/edu/static-resources/WARNing.jpg"));
+                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                stage.getIcons().add(new Image("/ub/edu/static-resources/WARNing.jpg"));
 
-            // Mostrar la alerta y manejar la respuesta del usuario
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.YES) {
-                    Platform.exit();
-                }
+                // Mostrar la alerta y manejar la respuesta del usuario
+                alert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.YES) {
+                        Platform.exit();
+                    }
+                });
             });
-        });
+        }
+
         //Mostrem la finestra
         newStage.show();
         return escena;

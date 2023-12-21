@@ -108,6 +108,10 @@ public class Controller  {
         // TO DO Practica 4 : afegir les valoracions de pel·lícules
         return modelFacade.valorarContingut(nomContingut, correu, valortype, valoracio);
     }
+
+    public boolean valorarContingut(String nomContingut, int numTemporada, int numEpisodi, String correu, ValorType valorType, String valoracio) {
+        return modelFacade.valorarContingut(nomContingut, numTemporada, numEpisodi, correu, valorType, valoracio);
+    }
     public String addToWishList(String nomContingut, String correu) {
         return modelFacade.addToWishList(nomContingut, correu).toString();
     }

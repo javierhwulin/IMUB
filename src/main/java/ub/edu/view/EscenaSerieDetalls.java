@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 
 public class EscenaSerieDetalls extends Escena{
+    private static final String TIPUS_ACTUALIZADOR = "wishList";
     public Text nomSerie_text;
     public Text data_text_caracteristiques;
     public Text data_text_nom;
@@ -28,10 +29,13 @@ public class EscenaSerieDetalls extends Escena{
     private String correu_persona;
     private String nom_contingut_audiovisual;
 
+    public UpdaterManager updater;
+
     public void start() throws Exception {
         this.correu_persona=this.controller.getSessionMemory().getCorreuPersona();
         this.nom_contingut_audiovisual =this.controller.getSessionMemory().getNomSerie();
         initData();
+        updater = new UpdaterManager(TIPUS_ACTUALIZADOR);
     }
 
     public void initData() throws Exception {
@@ -80,12 +84,7 @@ public class EscenaSerieDetalls extends Escena{
         alert.setHeaderText("Èxit");
         alert.setContentText(result);
         alert.showAndWait();
-        try {
-            EscenaMain escenaMain = ((EscenaMain) this.controller.getViewMemory().getMainScene());
-            escenaMain.reload();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        updater.notify(TIPUS_ACTUALIZADOR);
     }
 
     public void onBtntemporadesViewAddClick() throws Exception {
@@ -95,5 +94,4 @@ public class EscenaSerieDetalls extends Escena{
         escenaTemporadesDetalls.setController(controller);
         escenaTemporadesDetalls.start();
     }
-
 }

@@ -11,6 +11,8 @@ import java.util.HashMap;
 
 
 public class EscenaPelliculaDetalls extends Escena{
+    private static final String ACTUALIZADOR_WISHLIST = "wishList";
+    private static final String ACTUALIZADOR_TOP = "top10";
     public Text nomPellicula_text;
     public Text data_text_caracteristiques;
     public Text data_text_nom;
@@ -25,10 +27,13 @@ public class EscenaPelliculaDetalls extends Escena{
     private String correu_persona;
     private String nom_contingut_audiovisual;
 
+    public UpdaterManager updater;
+
     public void start() throws Exception {
         this.correu_persona=this.controller.getSessionMemory().getCorreuPersona();
         this.nom_contingut_audiovisual =this.controller.getSessionMemory().getNomPelicula();
         initData();
+        updater = new UpdaterManager(ACTUALIZADOR_WISHLIST);;
     }
 
     public void initData() throws Exception {
@@ -73,6 +78,7 @@ public class EscenaPelliculaDetalls extends Escena{
         EscenaValorarObra escenaValorarObra = ((EscenaValorarObra)escena);
         escenaValorarObra.setController(controller);
         escenaValorarObra.start();
+        escenaValorarObra.updater.subscribe(ACTUALIZADOR_TOP, (EscenaMain)controller.getViewMemory().getMainScene());
     }
 
     public void onBtnwishListAddClick() throws Exception {
@@ -82,12 +88,6 @@ public class EscenaPelliculaDetalls extends Escena{
         alert.setHeaderText("Èxit");
         alert.setContentText(result);
         alert.showAndWait();
-        try {
-            EscenaMain escenaMain = ((EscenaMain) this.controller.getViewMemory().getMainScene());
-            escenaMain.reload();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        updater.notify(ACTUALIZADOR_WISHLIST);
     }
-
 }

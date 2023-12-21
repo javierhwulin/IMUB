@@ -1,13 +1,14 @@
 package ub.edu.view;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import ub.edu.model.ValorType;
 import ub.edu.model.cataleg.ContingutType;
 
+import java.util.Objects;
+
 public class EscenaValorarObra extends Escena {
+    private static final String TIPUS_ACTUALIZADOR = "top10";
 
     public RadioButton radioButton_Group1_Like;
     public RadioButton radioButton_Group1_Dislike;
@@ -26,14 +27,27 @@ public class EscenaValorarObra extends Escena {
     public Button button_cancel;
 
     private String correu_persona;
+
+    private String tipus_obra_audiovisual;
     private String nom_obra_audiovisual;
+    private String nom_serie;
+    private int temporada;
+    private int episodi;
+    public UpdaterManager updater;
 
 
     public void start(){
         this.correu_persona=this.controller.getSessionMemory().getCorreuPersona();
+        this.tipus_obra_audiovisual = this.controller.getSessionMemory().getTipusObra();
         this.nom_obra_audiovisual =this.controller.getSessionMemory().getNomObra();
+        if(tipus_obra_audiovisual.equals("Episodi")){
+            this.nom_serie = this.controller.getSessionMemory().getNomSerie();
+            this.temporada = this.controller.getSessionMemory().getNumTemporada();
+            this.episodi = this.controller.getSessionMemory().getNumEpisodi();
+        }
 
         initialize_RB();
+        updater = new UpdaterManager(TIPUS_ACTUALIZADOR);
     }
 
     @FXML
@@ -157,9 +171,8 @@ public class EscenaValorarObra extends Escena {
             }
         }
 
-        System.out.println("EscenaValorarObra:onButtonValorarClick ->  Valoració de tipus: "+ typeValorar.toString()+ " és: "+ valor);
         //TODO Pràctica 4: Afegir comprobacions als valors
-        switch (typeValorar) {
+        switch (Objects.requireNonNull(typeValorar)) {
             case VALORAR_PER_PUNTS -> {
                 if (valor.isEmpty()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -200,28 +213,40 @@ public class EscenaValorarObra extends Escena {
             }
         }
         //TODO Pràctica 4: Fer efectiva la valoració d'una pel.licula via crida al controlador
-        if(controller.valorarContingut(nom_obra_audiovisual, correu_persona, typeValorar, valor)){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Valoració");
-            alert.setHeaderText("Valoració realitzada");
-            alert.setContentText("La valoració s'ha realitzat correctament");
-            alert.showAndWait();
-            stage.close();
-        }else{
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Valoració no realitzada");
-            alert.setContentText("La valoració no s'ha realitzat correctament");
-            alert.showAndWait();
+        if(tipus_obra_audiovisual.equals("Episodi")){
+            if(controller.valorarContingut(nom_serie, temporada, episodi, correu_persona, typeValorar, valor)){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Valoració");
+                alert.setHeaderText("Valoració realitzada");
+                alert.setContentText("La valoració s'ha realitzat correctament");
+                alert.showAndWait();
+                stage.close();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Valoració no realitzada");
+                alert.setContentText("La valoració no s'ha realitzat correctament");
+                alert.showAndWait();
+            }
+        }else if(tipus_obra_audiovisual.equals("Pelicula")){
+            if(controller.valorarContingut(nom_obra_audiovisual, correu_persona, typeValorar, valor)){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Valoració");
+                alert.setHeaderText("Valoració realitzada");
+                alert.setContentText("La valoració s'ha realitzat correctament");
+                alert.showAndWait();
+                stage.close();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Valoració no realitzada");
+                alert.setContentText("La valoració no s'ha realitzat correctament");
+                alert.showAndWait();
+            }
         }
-        controller.top10(ContingutType.Pelicula, ValorType.VALORAR_PER_PUNTS, ValorType.VALORAR_PER_PROMIG);
 
-        try {
-            EscenaMain escenaMain = ((EscenaMain) this.controller.getViewMemory().getMainScene());
-            escenaMain.reload();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        controller.top10(ContingutType.Pelicula, ValorType.VALORAR_PER_PUNTS, ValorType.VALORAR_PER_PROMIG);
+        updater.notify(TIPUS_ACTUALIZADOR);
     }
     public void onButtonCancelarClick(){
         //enviar la valoracion
