@@ -16,7 +16,7 @@ public class AppMain extends Application{
         //TODO: Fer els canvis que es creguin necessaris per a fer la creació
         // de controlador, model i vista: Qui crea a qui?
         //EL controlador crea el model i la vista. La vista i el model no crea res.
-        Controller controller = new Controller();
+        Controller controller = Controller.getInstance();
         Vista vista = new Vista(stage, controller);
     }
     public static void main(String[] args) {

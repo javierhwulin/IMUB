@@ -25,11 +25,14 @@ public class PointsHashMap extends RatingHashMap{
     public void addEpisodeRating(imUBCataleg cataleg, Client client, String title, int numTemporada, int numEpisodi, float rating) {
         ratingManager.addEpisodeRating(pointValoracions, cataleg, client, title, numTemporada, numEpisodi, rating);
     }
-    public List<HashMap<String, String>> getAllFilmRatings(String typeCalcul) {
+
+    @Override
+    public List<HashMap<String, String>> getAllFilmRatings(ValorType typeCalcul) {
         return ratingValue.getAllFilmRatings(pointValoracions, typeCalcul);
     }
 
-    public List<HashMap<String, String>> getAllSerieRatings(String typeCalcul) {
+    @Override
+    public List<HashMap<String, String>> getAllSerieRatings(ValorType typeCalcul) {
         return ratingValue.getAllSerieRatings(pointValoracions, typeCalcul);
     }
 }

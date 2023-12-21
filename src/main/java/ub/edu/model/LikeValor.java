@@ -5,7 +5,7 @@ import ub.edu.model.cataleg.ContingutDigital;
 import java.util.HashMap;
 
 public class LikeValor implements Valoracio{
-    private final float valoracio;
+    private float valoracio;
 
     public LikeValor(float valoracio) {
         if(valoracio == 0.0f || valoracio == 1.0f){
@@ -17,6 +17,10 @@ public class LikeValor implements Valoracio{
 
     public float getValoracio() {
         return valoracio;
+    }
+
+    public void setValoracio(float valoracio) {
+        this.valoracio = valoracio;
     }
 
     @Override

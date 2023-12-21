@@ -152,12 +152,16 @@ public class ResourcesFacade {
             Client client = imUBClients.findClientCartera(p.getElement1().toString());
             Pelicula pelicula = imUBCataleg.findPelicula(p.getElement2().toString());
             // TO DO  Pràctica 4: Cal afegir la pel·lícula a la llista de desitjos del client
+            client.addToWishList(pelicula);
         }
 
         List<Parell<String, String>> relacionsCSW = dataService.getAllRelacionsClientSerieWish();
 
         for (Parell p : relacionsCSW) {
             // TO DO  Pràctica 4: Cal afegir les valoracions de les sèries a la llista de desitjos del client
+            Client client = imUBClients.findClientCartera(p.getElement1().toString());
+            Serie serie = imUBCataleg.findSerie(p.getElement2().toString());
+            client.addToWishList(serie);
         }
     }
 
@@ -178,7 +182,7 @@ public class ResourcesFacade {
             String nomPelicula = p.getElement2().toString();
             String valor = p.getElement3().toString();
 
-            modelFacade.valorarContingut(nomPelicula, nomClient, ValorType.VALORAR_PER_PUNTS.toString(), valor);
+            modelFacade.valorarContingut(nomPelicula, nomClient, ValorType.VALORAR_PER_PUNTS, valor);
         }
 
         List<Trio<String, String, Integer>> relacionsSTI = dataService.getAllRelacionsClientPeliculaEstrelles();
@@ -194,7 +198,7 @@ public class ResourcesFacade {
             String valor = p.getElement3().toString();
 
             Client client = imUBClients.findClientCartera(nomClient);
-            modelFacade.valorarContingut(nomPelicula, nomClient, ValorType.VALORAR_PER_ESTRELLES.toString(), valor);
+            modelFacade.valorarContingut(nomPelicula, nomClient, ValorType.VALORAR_PER_ESTRELLES, valor);
         }
         List<Trio<String, String, Boolean>>  relacionsSTB = dataService.getAllRelacionsClientPeliculaLikes();
 
@@ -208,9 +212,9 @@ public class ResourcesFacade {
             String valor = p.getElement3().toString();
 
             if (valor.equals("true")) {
-                modelFacade.valorarContingut(nomPelicula, nomClient, ValorType.VALORAR_PER_LIKES.toString(), "1");
+                modelFacade.valorarContingut(nomPelicula, nomClient, ValorType.VALORAR_PER_LIKES, "1");
             } else if (valor.equals("false")) {
-                modelFacade.valorarContingut(nomPelicula, nomClient, ValorType.VALORAR_PER_LIKES.toString(), "0");
+                modelFacade.valorarContingut(nomPelicula, nomClient, ValorType.VALORAR_PER_LIKES, "0");
             }
         }
     }
@@ -231,7 +235,7 @@ public class ResourcesFacade {
             String numEpisodi = p.getElement4().toString();
             String valor = p.getElement5().toString();
 
-            modelFacade.valorarContingut(nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), nomClient, ValorType.VALORAR_PER_PUNTS.toString(), valor);
+            modelFacade.valorarContingut(nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), nomClient, ValorType.VALORAR_PER_PUNTS, valor);
         }
 
         List<Quintet<String, String, Integer, Integer, Integer>> relacionsSTI = dataService.getAllRelacionsClientEpisodiEstrelles();
@@ -249,7 +253,7 @@ public class ResourcesFacade {
             String numEpisodi = p.getElement4().toString();
             String valor = p.getElement5().toString();
 
-            modelFacade.valorarContingut(nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), nomClient, ValorType.VALORAR_PER_ESTRELLES.toString(), valor);
+            modelFacade.valorarContingut(nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), nomClient, ValorType.VALORAR_PER_ESTRELLES, valor);
         }
         List<Quintet<String, String, Integer, Integer, Boolean>> relacionsSTB = dataService.getAllRelacionsClientEpisodiLikes();
 
@@ -270,9 +274,9 @@ public class ResourcesFacade {
             if(client == null) System.out.println("Client no trobat");
             else {
                 if (valor.equals("true")) {
-                    modelFacade.valorarContingut(nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), nomClient, ValorType.VALORAR_PER_LIKES.toString(), "1");
+                    modelFacade.valorarContingut(nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), nomClient, ValorType.VALORAR_PER_LIKES, "1");
                 } else if (valor.equals("false")) {
-                    modelFacade.valorarContingut(nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), nomClient, ValorType.VALORAR_PER_LIKES.toString(), "0");
+                    modelFacade.valorarContingut(nomSerie, Integer.parseInt(numTemporada), Integer.parseInt(numEpisodi), nomClient, ValorType.VALORAR_PER_LIKES, "0");
                 }
             }
         }

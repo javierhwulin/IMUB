@@ -35,6 +35,7 @@ public enum EscenaFactory {
         //Setegem l'escena en el stage
         newStage.setScene(newScene);
 
+        //Quan tanquem la finestra main, es tanca l'aplicació.
         newStage.setOnCloseRequest(event -> {
             event.consume();
 

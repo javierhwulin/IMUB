@@ -27,12 +27,12 @@ public class StarsHashMap extends RatingHashMap{
     }
 
     @Override
-    public List<HashMap<String, String>> getAllFilmRatings(String typeCalcul) {
+    public List<HashMap<String, String>> getAllFilmRatings(ValorType typeCalcul) {
         return ratingValue.getAllFilmRatings(starValoracions, typeCalcul);
     }
 
     @Override
-    public List<HashMap<String, String>> getAllSerieRatings(String typeCalcul) {
+    public List<HashMap<String, String>> getAllSerieRatings(ValorType typeCalcul) {
         return ratingValue.getAllSerieRatings(starValoracions, typeCalcul);
     }
 }

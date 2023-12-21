@@ -1,5 +1,7 @@
 package ub.edu.model;
 
+import ub.edu.model.cataleg.ContingutType;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,9 +19,9 @@ public class ValorFacade {
         this.starsRating = new StarsHashMap();
     }
 
-    public boolean valorarContingut(Client client, String typeValoracio, String title, float rating) {
+    public boolean valorarContingut(Client client, ValorType typeValoracio, String title, float rating) {
         switch (typeValoracio) {
-            case "ValorEstrelles" -> {
+            case VALORAR_PER_ESTRELLES -> {
                 if (cataleg.esPelicula(title)) {
                     starsRating.addFilmRating(cataleg, client, title, rating);
                     return true;
@@ -28,7 +30,7 @@ public class ValorFacade {
                     return false;
                 }
             }
-            case "ValorPunts" -> {
+            case VALORAR_PER_PUNTS -> {
                 if (cataleg.esPelicula(title)) {
                     pointsRating.addFilmRating(cataleg, client, title, rating);
                     return true;
@@ -37,7 +39,7 @@ public class ValorFacade {
                     return false;
                 }
             }
-            case "ValorLikes" -> {
+            case VALORAR_PER_LIKES -> {
                 if (cataleg.esPelicula(title)) {
                     likesRating.addFilmRating(cataleg, client, title, rating);
                     return true;
@@ -53,9 +55,9 @@ public class ValorFacade {
         }
     }
 
-    public boolean valorarContingut(Client client, String typeValoracio, String title, int numTemporada, int numEpisodi, float rating) {
+    public boolean valorarContingut(Client client, ValorType typeValoracio, String title, int numTemporada, int numEpisodi, float rating) {
         switch (typeValoracio) {
-            case "StarValor" -> {
+            case VALORAR_PER_ESTRELLES -> {
                 if (!cataleg.esPelicula(title)) {
                     starsRating.addEpisodeRating(cataleg, client, title, numTemporada, numEpisodi, rating);
                     return true;
@@ -64,7 +66,7 @@ public class ValorFacade {
                     return false;
                 }
             }
-            case "PointValor" -> {
+            case VALORAR_PER_PUNTS -> {
                 if (!cataleg.esPelicula(title)) {
                     pointsRating.addEpisodeRating(cataleg, client, title, numTemporada, numEpisodi, rating);
                     return true;
@@ -73,7 +75,7 @@ public class ValorFacade {
                     return false;
                 }
             }
-            case "LikeValor" -> {
+            case VALORAR_PER_LIKES -> {
                 if (!cataleg.esPelicula(title)) {
                     likesRating.addEpisodeRating(cataleg, client, title, numTemporada, numEpisodi, rating);
                     return true;
@@ -86,28 +88,28 @@ public class ValorFacade {
         return false;
     }
 
-    public List<HashMap<String, String>> getAllFilmRating(String typeValoracio, String typeCalcul) {
+    public List<HashMap<String, String>> getAllFilmRating(ValorType typeValoracio, ValorType typeCalcul) {
         return switch (typeValoracio) {
-            case "StarValor" -> starsRating.getAllFilmRatings(typeCalcul);
-            case "PointValor" -> pointsRating.getAllFilmRatings(typeCalcul);
-            case "LikeValor" -> likesRating.getAllFilmRatings(typeCalcul);
+            case VALORAR_PER_ESTRELLES -> starsRating.getAllFilmRatings(typeCalcul);
+            case VALORAR_PER_PUNTS -> pointsRating.getAllFilmRatings(typeCalcul);
+            case VALORAR_PER_LIKES -> likesRating.getAllFilmRatings(typeCalcul);
             default -> null;
         };
     }
 
-    public List<HashMap<String, String>> getAllSerieRating(String typeValoracio, String typeCalcul) {
+    public List<HashMap<String, String>> getAllSerieRating(ValorType typeValoracio, ValorType typeCalcul) {
         return switch(typeValoracio) {
-            case "StarValor" -> starsRating.getAllSerieRatings(typeCalcul);
-            case "PointValor" -> pointsRating.getAllSerieRatings(typeCalcul);
-            case "LikeValor" -> likesRating.getAllSerieRatings(typeCalcul);
+            case VALORAR_PER_ESTRELLES -> starsRating.getAllSerieRatings(typeCalcul);
+            case VALORAR_PER_PUNTS -> pointsRating.getAllSerieRatings(typeCalcul);
+            case VALORAR_PER_LIKES -> likesRating.getAllSerieRatings(typeCalcul);
             default -> null;
         };
     }
 
     //TopList sort by rating value the list of ratings by type of rating and return the top list
-    private List<HashMap<String, String>> TopList(String tipusContingut, String tipusCalcul, RatingHashMap allRatings, int top) {
+    private List<HashMap<String, String>> TopList(ContingutType tipusContingut, ValorType tipusCalcul, RatingHashMap allRatings, int top) {
         switch (tipusContingut) {
-            case "Serie" -> {
+            case Serie -> {
                 List<HashMap<String, String>> list = allRatings.getAllSerieRatings(tipusCalcul);
                 list.sort((contingut1, contingut2) -> {
                     float valor1 = Float.parseFloat(contingut1.get("valor"));
@@ -117,7 +119,7 @@ public class ValorFacade {
                 });
                 return list;
             }
-            case "Pelicula" -> {
+            case Pelicula -> {
                 List<HashMap<String, String>> list = allRatings.getAllFilmRatings(tipusCalcul);
                 list.sort((contingut1, contingut2) -> {
                     float valor1 = Float.parseFloat(contingut1.get("valor"));
@@ -133,15 +135,15 @@ public class ValorFacade {
             }
         }
     }
-    public List<HashMap<String, String>> TopLikeList(String tipusContingut, String tipusCalcul, int top) {
+    public List<HashMap<String, String>> TopLikeList(ContingutType tipusContingut, ValorType tipusCalcul, int top) {
         return TopList(tipusContingut, tipusCalcul, likesRating, top);
     }
 
-    public List<HashMap<String, String>> TopPointList(String tipusContingut, String tipusCalcul, int top) {
+    public List<HashMap<String, String>> TopPointList(ContingutType tipusContingut, ValorType tipusCalcul, int top) {
         return TopList(tipusContingut, tipusCalcul, pointsRating, top);
     }
 
-    public List<HashMap<String, String>> TopStarList(String tipusContingut, String tipusCalcul, int top) {
+    public List<HashMap<String, String>> TopStarList(ContingutType tipusContingut, ValorType tipusCalcul, int top) {
         return TopList(tipusContingut, tipusCalcul, starsRating, top);
     }
 }

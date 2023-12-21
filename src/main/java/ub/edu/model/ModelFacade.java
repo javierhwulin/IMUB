@@ -162,10 +162,10 @@ public class ModelFacade {
         return imubCataleg.esPelicula(nomContingut);
     }
 
-    public boolean valorarContingut(String nomContingut, String correu, String valortype, String valoracio) {
+    public boolean valorarContingut(String nomContingut, String correu, ValorType valortype, String valoracio) {
     // TODO: Pràctica 4: Cal valorar el contingut amb nom nomContingut amb la valoració valoracio (Like/Dislike, punts o estrelles) del client amb correu correu
         switch (valortype) {
-            case "ValorLikes" -> {
+            case VALORAR_PER_LIKES -> {
                 if(valoracio.equals("Like") || valoracio.equals("1")) {
                     System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
                     Client client = imubClients.getCarteraClients().find(correu);
@@ -179,7 +179,7 @@ public class ModelFacade {
                     return false;
                 }
             }
-            case "ValorPunts", "ValorEstrelles" -> {
+            case VALORAR_PER_PUNTS, VALORAR_PER_ESTRELLES -> {
                 System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
                 Client client = imubClients.getCarteraClients().find(correu);
                 return valorFacade.valorarContingut(client, valortype, nomContingut, Float.parseFloat(valoracio));
@@ -191,9 +191,9 @@ public class ModelFacade {
         }
     }
 
-    public boolean valorarContingut(String nomContingut, int numTemporada, int numEpisodi, String correu, String valortype, String valoracio) {
+    public boolean valorarContingut(String nomContingut, int numTemporada, int numEpisodi, String correu, ValorType valortype, String valoracio) {
         switch (valortype) {
-            case "ValorLikes" -> {
+            case VALORAR_PER_LIKES -> {
                 if(valoracio.equals("Like") || valoracio.equals("1")) {
                     System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
                     Client client = imubClients.getCarteraClients().find(correu);
@@ -207,7 +207,7 @@ public class ModelFacade {
                     return false;
                 }
             }
-            case "ValorPunts", "ValorEstrelles" -> {
+            case VALORAR_PER_PUNTS, VALORAR_PER_ESTRELLES -> {
                 System.out.println("Model Facade: valorarContingut -> nomContingut: " + nomContingut + " correu: " + correu + " valortype: " + valortype + " valoracio: " + valoracio);
                 Client client = imubClients.getCarteraClients().find(correu);
                 return valorFacade.valorarContingut(client, valortype, nomContingut, numTemporada, numEpisodi, Float.parseFloat(valoracio));
@@ -246,18 +246,18 @@ public class ModelFacade {
         return contingutsDisponibles;
     }
 
-    public List<HashMap<String, String>> TopList(String tipusContingut, String tipusValoracio, String tipusCalcul, int top) throws IllegalArgumentException {
+    public List<HashMap<String, String>> TopList(ContingutType tipusContingut, ValorType tipusValoracio, ValorType tipusCalcul, int top) throws IllegalArgumentException {
         // TO DO: Pràctica 4: Cal retornar els #top continguts de tipus tipusContingut amb la valoració tipusValoracio i el càlcul tipusCalcul
 
         System.out.println("Model Facade: TopList -> tipusContingut: " + tipusContingut + ", tipusValoracio: " + tipusValoracio + ", tipusCalcul: " + tipusCalcul + ", top: " + top);
         switch(tipusValoracio) {
-            case "ValorLikes" -> {
+            case VALORAR_PER_LIKES -> {
                 return valorFacade.TopLikeList(tipusContingut, tipusCalcul, top);
             }
-            case "ValorPunts" -> {
+            case VALORAR_PER_PUNTS -> {
                 return valorFacade.TopPointList(tipusContingut, tipusCalcul, top);
             }
-            case "ValorEstrelles" -> {
+            case VALORAR_PER_ESTRELLES -> {
                 return valorFacade.TopStarList(tipusContingut, tipusCalcul, top);
             }
             default -> {

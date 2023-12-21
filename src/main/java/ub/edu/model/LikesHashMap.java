@@ -25,11 +25,13 @@ public class LikesHashMap extends RatingHashMap{
         ratingManager.addEpisodeRating(likeValoracions, cataleg, client, title, numTemporada, numEpisodi, rating);
     }
 
-    public List<HashMap<String, String>> getAllFilmRatings(String typeCalcul) {
+    @Override
+    public List<HashMap<String, String>> getAllFilmRatings(ValorType typeCalcul) {
         return ratingValue.getAllFilmRatings(likeValoracions, typeCalcul);
     }
 
-    public List<HashMap<String, String>> getAllSerieRatings(String typeCalcul) {
+    @Override
+    public List<HashMap<String, String>> getAllSerieRatings(ValorType typeCalcul) {
         return ratingValue.getAllSerieRatings(likeValoracions, typeCalcul);
     }
 }

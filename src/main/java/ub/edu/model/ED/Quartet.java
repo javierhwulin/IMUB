@@ -51,7 +51,7 @@ public class Quartet <T, V, K, Z>{
         if (element1 == null) {
             if (other.element1 != null)
                 return false;
-        } else if (!element1.equals(other.element2))
+        } else if (!element1.equals(other.element1))
             return false;
         if (element2 == null) {
             if (other.element2 != null)

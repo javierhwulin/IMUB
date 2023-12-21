@@ -11,7 +11,7 @@ public class ComputeValue {
     public void setValorarStrategy(ValorarStrategy valorarStrategy) {
         this.valorarStrategy = valorarStrategy;
     }
-    public HashMap<String, Float> executeValoracio(HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>  list) {
+    public HashMap<ContingutDigital, Float> executeValoracio(HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>  list) {
         return valorarStrategy.executeValoracio(list);
     }
 }

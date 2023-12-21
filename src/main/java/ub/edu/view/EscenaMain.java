@@ -13,9 +13,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import ub.edu.model.ValorType;
+import ub.edu.model.cataleg.ContingutType;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -66,14 +69,14 @@ public class EscenaMain extends Escena  {
     }
 
     public void initStartMain(){
-        comboBox_TipusTop10.setValue("Pelicula");
+        comboBox_TipusTop10.setValue(ContingutType.Pelicula.toString());
         checkBoxPunts.setSelected(true);
     }
 
     public void initViewMemory() {
         controller.getViewMemory().setMainScene(this);
-        controller.getViewMemory().setFilterTypeValue("ValorPunts");
-        controller.getViewMemory().setFilterStrategyValue("ValoracioStrategyPromig");
+        controller.getViewMemory().setFilterTypeValue("VALORAR_PER_PUNTS");
+        controller.getViewMemory().setFilterStrategyValue("VALORAR_PER_PROMIG");
         controller.getViewMemory().setFilterTypeObraAudioVisual("ALL");
         controller.getViewMemory().setFilterTypeTop("Pelicula");
     }
@@ -169,24 +172,33 @@ public class EscenaMain extends Escena  {
         String FilterType = controller.getViewMemory().getFilterTypeValue();
         String FilterStrategy = controller.getViewMemory().getFilterStrategyValue();
 
-        if(FilterType.equals("ValorPunts")) {
-            button_punts_main.setStyle("-fx-background-color: #ff0000");
-            button_estrelles_main.setStyle("-fx-background-color: #ffffff");
-            button_likes_main.setStyle("-fx-background-color: #ffffff");
-        }else if(FilterType.equals("ValorEstrelles")) {
-            button_punts_main.setStyle("-fx-background-color: #ffffff");
-            button_estrelles_main.setStyle("-fx-background-color: #3bb143");
-            button_likes_main.setStyle("-fx-background-color: #ffffff");
-        }else{
-            button_punts_main.setStyle("-fx-background-color: #ffffff");
-            button_estrelles_main.setStyle("-fx-background-color: #ffffff");
-            button_likes_main.setStyle("-fx-background-color: #006fb9");
+        switch (FilterType) {
+            case "VALORAR_PER_PUNTS" -> {
+                button_punts_main.setStyle("-fx-background-color: #ff0000");
+                button_estrelles_main.setStyle("-fx-background-color: #ffffff");
+                button_likes_main.setStyle("-fx-background-color: #ffffff");
+            }
+            case "VALORAR_PER_ESTRELLES" -> {
+                button_punts_main.setStyle("-fx-background-color: #ffffff");
+                button_estrelles_main.setStyle("-fx-background-color: #3bb143");
+                button_likes_main.setStyle("-fx-background-color: #ffffff");
+            }
+            case "VALORAR_PER_LIKES" -> {
+                button_punts_main.setStyle("-fx-background-color: #ffffff");
+                button_estrelles_main.setStyle("-fx-background-color: #ffffff");
+                button_likes_main.setStyle("-fx-background-color: #006fb9");
+            }
+            default -> {
+                button_punts_main.setStyle("-fx-background-color: #ffffff");
+                button_estrelles_main.setStyle("-fx-background-color: #ffffff");
+                button_likes_main.setStyle("-fx-background-color: #ffffff");
+            }
         }
         List<HashMap<String, String>> listaObres;
-        if(FilterType.equals("ValorPunts")) {
-            listaObres = controller.top10(tipusContingut, FilterType, FilterStrategy);
+        if(FilterType.equals("VALORAR_PER_PUNTS")) {
+            listaObres = controller.top10(ContingutType.valueOf(tipusContingut), ValorType.valueOf(FilterType), ValorType.valueOf(FilterStrategy));
         }else{
-            listaObres = controller.top10(tipusContingut, FilterType, "ValoracioStrategyAbsolut");
+            listaObres = controller.top10(ContingutType.valueOf(tipusContingut), ValorType.valueOf(FilterType), ValorType.VALORAR_PER_ABSOLUT);
         }
 
 
@@ -344,21 +356,23 @@ public class EscenaMain extends Escena  {
             String filterType = controller.getViewMemory().getFilterTypeValue();
             String filterStrategy = controller.getViewMemory().getFilterStrategyValue();
             String tipusContingut;
-            if(newValue.equals("Pelicula")){
-                tipusContingut = "Pelicula";
-                controller.getViewMemory().setFilterTypeTop("Pelicula");
-            }else if(newValue.equals("Serie")){
-                tipusContingut = "Serie";
-                controller.getViewMemory().setFilterTypeTop("Serie");
+            if(newValue.equals(ContingutType.Pelicula.toString())) {
+                tipusContingut = ContingutType.Pelicula.toString();
+                controller.getViewMemory().setFilterTypeTop(ContingutType.Pelicula.toString());
+            }else if(newValue.equals(ContingutType.Serie.toString())){
+                tipusContingut = ContingutType.Serie.toString();
+                controller.getViewMemory().setFilterTypeTop(ContingutType.Serie.toString());
             }else{
-                tipusContingut = "Pelicula";
-                controller.getViewMemory().setFilterTypeTop("Pelicula");
+                tipusContingut = ContingutType.Pelicula.toString();
+                controller.getViewMemory().setFilterTypeTop(ContingutType.Pelicula.toString());
             }
             List<HashMap<String, String>> listaObres;
-            if(filterType.equals("ValorPunts")) {
-                listaObres = controller.top10(tipusContingut, filterType, filterStrategy);
+            System.out.println("ContingutType: "+ ContingutType.valueOf(tipusContingut) + " FilterType: "+ ValorType.valueOf(filterType) + " FilterStrategy: "+ ValorType.valueOf(filterStrategy));
+            System.out.println("FilterType: "+ filterType + " FilterStrategy: "+ filterStrategy);
+            if(filterType.equals("VALORAR_PER_PUNTS")) {
+                listaObres = controller.top10(ContingutType.valueOf(tipusContingut), ValorType.valueOf(filterType), ValorType.valueOf(filterStrategy));
             }else{
-                listaObres = controller.top10(tipusContingut, filterType, "ValoracioStrategyAbsolut");
+                listaObres = controller.top10(ContingutType.valueOf(tipusContingut), ValorType.valueOf(filterType), ValorType.VALORAR_PER_ABSOLUT);
             }
 
             for (HashMap<String, String> obra : listaObres) {
@@ -446,31 +460,34 @@ public class EscenaMain extends Escena  {
     }
 
     public void onButtonPuntsClick(){
-        controller.getSessionMemory().setTipusValoracio("ValorPunts");
-        controller.getViewMemory().setFilterTypeValue("ValorPunts");
+        controller.getSessionMemory().setTipusValoracio("VALORAR_PER_PUNTS");
+        controller.getViewMemory().setFilterTypeValue("VALORAR_PER_PUNTS");
+        System.out.println("Tipus Valoració: " + controller.getSessionMemory().getTipusValoracio());
         checkBoxPunts.setDisable(false);
 
         popularTopDeuValorades();
     }
     public void onButtonEstrellesClick(){
-        controller.getSessionMemory().setTipusValoracio("ValorEstrelles");
-        controller.getViewMemory().setFilterTypeValue("ValorEstrelles");
+        controller.getSessionMemory().setTipusValoracio("VALORAR_PER_ESTRELLES");
+        controller.getViewMemory().setFilterTypeValue("VALORAR_PER_ESTRELLES");
+        System.out.println("Tipus Valoració: " + controller.getSessionMemory().getTipusValoracio());
         checkBoxPunts.setDisable(true);
         popularTopDeuValorades();
     }
     public void onButtonLikesClick() {
-        controller.getSessionMemory().setTipusValoracio("ValorLikes");
-        controller.getViewMemory().setFilterTypeValue("ValorLikes");
+        controller.getSessionMemory().setTipusValoracio("VALORAR_PER_LIKES");
+        controller.getViewMemory().setFilterTypeValue("VALORAR_PER_LIKES");
+        System.out.println("Tipus Valoració: " + controller.getSessionMemory().getTipusValoracio());
         checkBoxPunts.setDisable(true);
         popularTopDeuValorades();
     }
     public void onPonderadaCheckbox() {
         if (checkBoxPunts.isSelected()) {
-            controller.getSessionMemory().setTipusStrategy("ValoracioStrategyPromig");
-            controller.getViewMemory().setFilterStrategyValue("ValoracioStrategyPromig");
+            controller.getSessionMemory().setTipusStrategy("VALORAR_PER_PROMIG");
+            controller.getViewMemory().setFilterStrategyValue("VALORAR_PER_PROMIG");
         } else {
-            controller.getSessionMemory().setTipusStrategy("ValoracioStrategyAbsolut");
-            controller.getViewMemory().setFilterStrategyValue("ValoracioStrategyAbsolut");
+            controller.getSessionMemory().setTipusStrategy("VALORAR_PER_ABSOLUT");
+            controller.getViewMemory().setFilterStrategyValue("VALORAR_PER_ABSOLUT");
         }
         System.out.println("Strategy selected: " + controller.getSessionMemory().getTipusStrategy());
         popularTopDeuValorades();

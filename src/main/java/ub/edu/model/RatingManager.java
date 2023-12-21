@@ -32,7 +32,7 @@ public class RatingManager {
                     System.out.println("Model Facade: valorarContingut -> episodi no trobat");
                 } else {
                     ValorFactory valorFactory = new PointValorType();
-                    valorFactory.addValoracio(client, serie, valoracions, rating);
+                    valorFactory.addValoracio(client, serie, numTemporada, numEpisodi, valoracions, rating);
                 }
             }
         }else{

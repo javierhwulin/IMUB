@@ -1,6 +1,7 @@
 package ub.edu.model;
 import ub.edu.model.ED.Quartet;
-import ub.edu.model.cataleg.ContingutDigital;
+import ub.edu.model.cataleg.*;
+
 import java.util.HashMap;
 
 public interface Valoracio {

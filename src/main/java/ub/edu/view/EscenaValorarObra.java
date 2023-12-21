@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import ub.edu.model.ValorType;
+import ub.edu.model.cataleg.ContingutType;
 
 public class EscenaValorarObra extends Escena {
 
@@ -127,21 +129,21 @@ public class EscenaValorarObra extends Escena {
         // 3- Refrescar la vista si es necesario
 
         // Aqui tienes un código de ejemplo para ver cómo recoger el valor de un radio button
-        String typeValorar = "";
+        ValorType typeValorar = null;
         String valor = "";
 
         if (radioButton_G1_Text1.isSelected()) {
-            typeValorar = "ValorLikes";
+            typeValorar = ValorType.VALORAR_PER_LIKES;
             if (radioButton_Group1_Like.isSelected()) {
                 valor = radioButton_Group1_Like.getText();
             } else if (radioButton_Group1_Dislike.isSelected()) {
                 valor = radioButton_Group1_Dislike.getText();
             }
         } else if (radioButton_G2_Text2.isSelected()) {
-            typeValorar = "ValorPunts";
+            typeValorar = ValorType.VALORAR_PER_PUNTS;
             valor = textField_Group2.getText();
         } else if (radioButton_G3_Text3.isSelected()) {
-            typeValorar = "ValorEstrelles";
+            typeValorar = ValorType.VALORAR_PER_ESTRELLES;
             if (radioButton_Group3_Text1.isSelected()) {
                 valor = radioButton_Group3_Text1.getText();
             } else if (radioButton_Group3_Text2.isSelected()) {
@@ -155,10 +157,10 @@ public class EscenaValorarObra extends Escena {
             }
         }
 
-        System.out.println("EscenaValorarObra:onButtonValorarClick ->  Valoració de tipus: "+ typeValorar+ " és: "+ valor);
+        System.out.println("EscenaValorarObra:onButtonValorarClick ->  Valoració de tipus: "+ typeValorar.toString()+ " és: "+ valor);
         //TODO Pràctica 4: Afegir comprobacions als valors
         switch (typeValorar) {
-            case "ValorPunts" -> {
+            case VALORAR_PER_PUNTS -> {
                 if (valor.isEmpty()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
@@ -186,7 +188,7 @@ public class EscenaValorarObra extends Escena {
                     return;
                 }
             }
-            case "ValorEstrelles", "ValorLikes" -> {
+            case VALORAR_PER_ESTRELLES, VALORAR_PER_LIKES -> {
                 if (valor.isEmpty()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
@@ -212,7 +214,7 @@ public class EscenaValorarObra extends Escena {
             alert.setContentText("La valoració no s'ha realitzat correctament");
             alert.showAndWait();
         }
-        controller.top10("Pelicula", "ValorPunts", "ValoracioStrategyPromig");
+        controller.top10(ContingutType.Pelicula, ValorType.VALORAR_PER_PUNTS, ValorType.VALORAR_PER_PROMIG);
 
         try {
             EscenaMain escenaMain = ((EscenaMain) this.controller.getViewMemory().getMainScene());

@@ -7,5 +7,5 @@ import java.util.HashMap;
 
 public interface ValorarStrategy {
     //Calculate the rating of a film or serie by the average of the ratings of the episodes or the film itself or the absolute of the ratings.
-    HashMap<String, Float> executeValoracio(HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio> allRatings);
+    HashMap<ContingutDigital, Float> executeValoracio(HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio> allRatings);
 }

@@ -1,6 +1,7 @@
 package ub.edu.controller;
 
 import ub.edu.model.*;
+import ub.edu.model.cataleg.ContingutType;
 import ub.edu.resources.ResourcesFacade;
 import ub.edu.view.ViewMemory;
 
@@ -8,7 +9,7 @@ import java.util.*;
 
 
 public class Controller  {
-
+    private static volatile Controller instance = null;
     private final ResourcesFacade inicialitzador;
 
     private final ModelFacade modelFacade;
@@ -17,7 +18,7 @@ public class Controller  {
 
     private final ViewMemory viewMemory;
 
-    public Controller() {
+    private Controller() {
         imUBCataleg imubCataleg = new imUBCataleg();
         imUBClients imubClients = new imUBClients();
 
@@ -27,6 +28,19 @@ public class Controller  {
         inicialitzador = new ResourcesFacade(imubCataleg, imubClients, modelFacade);
         inicialitzador.populateImUB();
         inicialitzador.populateiImUBClients();
+    }
+
+    public static Controller getInstance() {
+        Controller controller = instance;
+        if (controller != null) {
+            return controller;
+        }
+        synchronized (Controller.class) {
+            if (instance == null) {
+                instance = new Controller();
+            }
+        }
+        return instance;
     }
 
     public SessionMemory getSessionMemory() {
@@ -90,7 +104,7 @@ public class Controller  {
         return modelFacade.esPelicula(nomContingut);
     }
 
-    public boolean valorarContingut(String nomContingut, String correu, String valortype, String valoracio) {
+    public boolean valorarContingut(String nomContingut, String correu, ValorType valortype, String valoracio) {
         // TO DO Practica 4 : afegir les valoracions de pel·lícules
         return modelFacade.valorarContingut(nomContingut, correu, valortype, valoracio);
     }
@@ -101,7 +115,7 @@ public class Controller  {
     public List<HashMap<Object, Object>> getWishList(String correu) {
         return modelFacade.getWishList(correu, 10);
     }
-    public List<HashMap<String, String>> top10(String tipusContingut, String tipusValoracio, String tipusCalcul) throws IllegalArgumentException{
+    public List<HashMap<String, String>> top10(ContingutType tipusContingut, ValorType tipusValoracio, ValorType tipusCalcul) throws IllegalArgumentException{
         return modelFacade.TopList(tipusContingut, tipusValoracio, tipusCalcul, 10);
     }
 
