@@ -1,0 +1,110 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class Comunitat {
+  + Comunitat(String, String): 
+  - descripcioComunitat: String
+  - communitylist: List<ContingutDigital>
+  + addContingutDigital(ContingutDigital): void
+  + addTematica(Tematica): void
+   descripcioComunitat: String
+   descripcio: String
+   nom: String
+   communitylist: List<ContingutDigital>
+}
+class ContingutDigital {
+  + ContingutDigital(String, int, String): 
+  + ContingutDigital(String, int): 
+  + ContingutDigital(String): 
+  - anyPrimeraEmissio: int
+  ~ idioma: String
+  - descripcio: String
+  - llistaTematiques: List<Tematica>
+  ~ durada: int
+  - titol: String
+  + addTematica(Tematica): void
+   anyPrimeraEmissio: int
+   idioma: String
+   llistaTematiques: List<Tematica>
+   titol: Object
+   descripcio: String
+   durada: int
+   nom: String
+   anyEstrena: String
+}
+enum ContingutType << enumeration >> {
+  + ContingutType(): 
+  + values(): ContingutType[]
+  + valueOf(String): ContingutType
+}
+class Episodi {
+  + Episodi(String, int, int, String, int): 
+  + Episodi(String, int, int, String, String, String, String, String, float): 
+  + Episodi(String, int, int, String): 
+  + Episodi(String, int, int, String, int, float): 
+  - anyEstrena: String
+  - llistaTematiques: List<Tematica>
+  - numTemporada: int
+  - numEpisodi: int
+  - titol: String
+  - durada: int
+  - url: String
+  - nomSerie: String
+  - descripcio: String
+  + equals(Episodi): boolean
+  + addTematica(Tematica): void
+   numTemporada: int
+   nomSerie: String
+   url: String
+   numEpisodi: int
+   llistaTematiques: List<Tematica>
+   descripcio: String
+   durada: int
+   nom: String
+   valoracioInicial: float
+   anyEstrena: String
+   titol: String
+}
+class Pelicula {
+  + Pelicula(String, String, String, int, String, float): 
+  + Pelicula(String, String, String, int, String, int): 
+  + Pelicula(String, int, int): 
+  - valoracioInicial: float
+  + equals(Pelicula): boolean
+   valoracioInicial: float
+   URL: String
+}
+class Serie {
+  + Serie(String, String, String, int, String, int): 
+  + Serie(String, int): 
+  + Serie(String, String, String, int, String): 
+  + Serie(String, String, int): 
+  - imatgeUrl: String
+  + addTemporada(Temporada): void
+  + findTemporada(int): Temporada
+   temporades: List<Temporada>
+   numTemporades: int
+   imatgeUrl: String
+}
+class Tematica {
+  + Tematica(String): 
+  - nomTematica: String
+   nomTematica: String
+}
+class Temporada {
+  + Temporada(String, int): 
+  - nomSerie: String
+  - numTemporada: int
+  + addEpisodi(Episodi): void
+  + findEpisodi(int): Episodi
+   episodis: List<Episodi>
+   numTemporada: int
+   nomSerie: String
+}
+
+Pelicula          -[#000082,plain]-^  ContingutDigital 
+Serie             -[#000082,plain]-^  ContingutDigital 
+@enduml

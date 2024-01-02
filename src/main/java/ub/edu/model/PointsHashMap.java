@@ -18,12 +18,12 @@ public class PointsHashMap extends RatingHashMap{
 
     @Override
     public void addFilmRating(imUBCataleg cataleg, Client client, String title, float rating) {
-        ratingManager.addFilmRating(pointValoracions, cataleg, client, title, rating);
+        ratingManager.addFilmRating(pointValoracions, cataleg, client, title, rating, ValorType.VALORAR_PER_PUNTS.toString());
     }
 
     @Override
     public void addEpisodeRating(imUBCataleg cataleg, Client client, String title, int numTemporada, int numEpisodi, float rating) {
-        ratingManager.addEpisodeRating(pointValoracions, cataleg, client, title, numTemporada, numEpisodi, rating);
+        ratingManager.addEpisodeRating(pointValoracions, cataleg, client, title, numTemporada, numEpisodi, rating, ValorType.VALORAR_PER_PUNTS.toString());
     }
 
     @Override

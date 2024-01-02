@@ -1,0 +1,286 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class CarteraClients {
+  - llista: List<Client>
+  + getAll(): List<Client>
+  + find(String): Client
+  + add(Client): void
+}
+class Client {
+  - nompropi: String
+  - cognoms: String
+  - nom: String
+  - pwd: String
+  - dni: String
+  - wishList: WishList
+  + getPwd(): String
+  + addToWishList(ContingutDigital): void
+  + setPwd(String): void
+  + getWishList(): List<ContingutDigital>
+  + getNom(): String
+  + setNom(String): void
+}
+class ComputeByAbsolut {
+  + executeValoracio(HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>): HashMap<ContingutDigital, Float>
+}
+class ComputeByPromig {
+  + executeValoracio(HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>): HashMap<ContingutDigital, Float>
+}
+class ComputeValue {
+  - valorarStrategy: ValorarStrategy
+  + setValorarStrategy(ValorarStrategy): void
+  + executeValoracio(HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>): HashMap<ContingutDigital, Float>
+}
+class LikeValor {
+  - valoracio: float
+  + addValoracio(Client, ContingutDigital, HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>): void
+  + getValoracio(): float
+  + setValoracio(float): void
+  + addValoracio(Client, ContingutDigital, int, int, HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>): void
+}
+class LikeValorType {
+  + createValoracio(float): Valoracio
+}
+class LikesHashMap {
+  - likeValoracions: HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>
+  - ratingValue: RatingValue
+  - ratingManager: RatingManager
+  + addFilmRating(imUBCataleg, Client, String, float): void
+  + getAllFilmRatings(ValorType): List<HashMap<String, String>>
+  + getAllSerieRatings(ValorType): List<HashMap<String, String>>
+  + addEpisodeRating(imUBCataleg, Client, String, int, int, float): void
+}
+class ModelFacade {
+  - imubClients: imUBClients
+  - imubCataleg: imUBCataleg
+  - valorFacade: ValorFacade
+  + valorarContingut(String, String, ValorType, String): boolean
+  + getAllComunitatsPerNom(): List<HashMap<Object, Object>>
+  + findPersonaByCorreu(String): Client
+  + getAllPelicules(): List<HashMap<Object, Object>>
+  + addComunitatClient(String, String): void
+  + getAllPeliculesPerTematica(String): List<HashMap<Object, Object>>
+  + valorarContingut(String, int, int, String, ValorType, String): boolean
+  + getWishList(String, int): List<HashMap<Object, Object>>
+  + getAllComunitatsPerPersona(String): List<HashMap<Object, Object>>
+  + getAllSeries(): List<HashMap<Object, Object>>
+  + esPelicula(String): boolean
+  + getAllContingutsDigitalsPerTematica(String): List<HashMap<Object, Object>>
+  + loguejarSociStatus(String, String): StatusType
+  + getDetallsPelicula(String): HashMap<Object, Object>
+  + getAllTemporadesDeSerie(String): List<HashMap<Object, Object>>
+  + getAllTematiques(): List<HashMap<Object, Object>>
+  + getDetallsSerie(String): HashMap<Object, Object>
+  + addToWishList(String, String): StatusType
+  + TopList(ContingutType, ValorType, ValorType, int): List<HashMap<String, String>>
+  + getAllContingutsDigitalsPerNom(): List<HashMap<Object, Object>>
+  + getEpisodiDetalls(String, Integer, Integer): HashMap<Object, Object>
+  + getAllSeriesPerTematica(String): List<HashMap<Object, Object>>
+  + getAllEpisodis(String, int): List<HashMap<Object, Object>>
+}
+class PointValor {
+  - valoracio: float
+  + addValoracio(Client, ContingutDigital, HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>): void
+  + getValoracio(): float
+  + addValoracio(Client, ContingutDigital, int, int, HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>): void
+}
+class PointValorType {
+  + createValoracio(float): Valoracio
+}
+class PointsHashMap {
+  - ratingManager: RatingManager
+  - pointValoracions: HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>
+  - ratingValue: RatingValue
+  + getAllFilmRatings(ValorType): List<HashMap<String, String>>
+  + addEpisodeRating(imUBCataleg, Client, String, int, int, float): void
+  + addFilmRating(imUBCataleg, Client, String, float): void
+  + getAllSerieRatings(ValorType): List<HashMap<String, String>>
+}
+class RatingHashMap {
+  + getAllSerieRatings(ValorType): List<HashMap<String, String>>
+  + addFilmRating(imUBCataleg, Client, String, float): void
+  + addEpisodeRating(imUBCataleg, Client, String, int, int, float): void
+  + getAllFilmRatings(ValorType): List<HashMap<String, String>>
+}
+class RatingManager {
+  + addFilmRating(HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>, imUBCataleg, Client, String, float): void
+  + addEpisodeRating(HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>, imUBCataleg, Client, String, int, int, float): void
+}
+class RatingValue {
+  ~ computeValue: ComputeValue
+  + getAllSerieRatings(HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>, ValorType): List<HashMap<String, String>>
+  - getValorList(HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>, ValorType): HashMap<ContingutDigital, Float>
+  + getAllFilmRatings(HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>, ValorType): List<HashMap<String, String>>
+}
+class Seguretat {
+  + isPasswordSegur(String): boolean
+  + validatePassword(String): StatusType
+  + validateUsername(String): StatusType
+  + isMail(String): boolean
+}
+class StarFactory {
+  + createValoracio(float): Valoracio
+}
+class StarValue {
+  - valoracio: float
+  + addValoracio(Client, ContingutDigital, HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>): void
+  + getValoracio(): float
+  + addValoracio(Client, ContingutDigital, int, int, HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>): void
+}
+class StarsHashMap {
+  - ratingValue: RatingValue
+  - starValoracions: HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>
+  - ratingManager: RatingManager
+  + getAllFilmRatings(ValorType): List<HashMap<String, String>>
+  + getAllSerieRatings(ValorType): List<HashMap<String, String>>
+  + addEpisodeRating(imUBCataleg, Client, String, int, int, float): void
+  + addFilmRating(imUBCataleg, Client, String, float): void
+}
+enum StatusType << enumeration >> {
+  - text: String
+  + FORMAT_INCORRECTE_CORREU_PWD: 
+  + PERSONA_DUPLICADA: 
+  + CORREU_INEXISTENT: 
+  + ADDED_TO_WISH_LIST: 
+  + FORMAT_INCORRECTE: 
+  + REMOVED_FROM_WISH_LIST: 
+  + CONTRASENYA_NO_SEGURA: 
+  + REGISTRE_VALID: 
+  + COMUNITAT_INEXISTENT: 
+  + CORREU_INCORRECTE: 
+  + CONTINGUT_INEXISTENT: 
+  + CONTRASENYA_INCORRECTA: 
+  + LOGIN_CORRECTE: 
+  + CONTRASENYA_SEGURA: 
+  + CORREU_CORRECTE: 
+  + values(): StatusType[]
+  + toString(): String
+  + valueOf(String): StatusType
+}
+class ValorFacade {
+  - cataleg: imUBCataleg
+  - pointsRating: RatingHashMap
+  - starsRating: RatingHashMap
+  - likesRating: RatingHashMap
+  + valorarContingut(Client, ValorType, String, int, int, float): boolean
+  + getAllSerieRating(ValorType, ValorType): List<HashMap<String, String>>
+  + valorarContingut(Client, ValorType, String, float): boolean
+  + TopPointList(ContingutType, ValorType, int): List<HashMap<String, String>>
+  - TopList(ContingutType, ValorType, RatingHashMap, int): List<HashMap<String, String>>
+  + TopLikeList(ContingutType, ValorType, int): List<HashMap<String, String>>
+  + getAllFilmRating(ValorType, ValorType): List<HashMap<String, String>>
+  + TopStarList(ContingutType, ValorType, int): List<HashMap<String, String>>
+}
+class ValorFactory {
+  + addValoracio(Client, ContingutDigital, int, int, HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>, float): void
+  + addValoracio(Client, ContingutDigital, HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>, float): void
+  + createValoracio(float): Valoracio
+}
+enum ValorType << enumeration >> {
+  + VALORAR_PER_PUNTS: 
+  - text: String
+  + VALORAR_PER_ESTRELLES: 
+  + VALORAR_PER_PROMIG: 
+  + VALORAR_PER_ABSOLUT: 
+  + VALORAR_PER_LIKES: 
+  + toString(): String
+  + values(): ValorType[]
+  + valueOf(String): ValorType
+}
+interface Valoracio << interface >> {
+  + addValoracio(Client, ContingutDigital, int, int, HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>): void
+  + addValoracio(Client, ContingutDigital, HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>): void
+  + getValoracio(): float
+}
+interface ValorarStrategy << interface >> {
+  + executeValoracio(HashMap<Quartet<Client, ContingutDigital, Integer, Integer>, Valoracio>): HashMap<ContingutDigital, Float>
+}
+class WishList
+class imUBCataleg {
+  - llistaSeries: List<Serie>
+  - llistaPelicules: List<Pelicula>
+  - llistaTematiques: List<Tematica>
+  - llistaComunitats: List<Comunitat>
+  + findPelicula(String): Pelicula
+  + getAllContingutsDigitals(): List<ContingutDigital>
+  + setLlistaPelicules(List<Pelicula>): void
+  + getAllPelicules(): List<Pelicula>
+  + findSerie(String): Serie
+  + setLlistaTematiques(List<Tematica>): void
+  + getAllTematiques(): List<Tematica>
+  + getAllSeriesPerTematica(String): List<Serie>
+  + esPelicula(String): boolean
+  + setLlistaComunitats(List<Comunitat>): void
+  + getAllContingutsDigitalsPerTematica(String): List<ContingutDigital>
+  + findContingutDigital(String): ContingutDigital
+  + findTematica(String): Tematica
+  + findComunitat(String): Comunitat
+  + getAllSeries(): List<Serie>
+  + setLlistaSeries(List<Serie>): void
+  + getAllPeliculesPerTematica(String): List<Pelicula>
+  + getAllComunitats(): List<Comunitat>
+}
+class imUBClients {
+  - cartera: CarteraClients
+  + getCarteraClients(): CarteraClients
+  + setCarteraClients(List<Client>): void
+  + findClientCartera(String): Client
+  + addClient(Client): void
+}
+class node12 as "package  ub.edu.model.ED" << package >>
+class node11 as "package  ub.edu.model.cataleg" << package >>
+
+CarteraClients   "1" *-[#595959,plain]-> "llista\n*" Client           
+Client           "1" *-[#595959,plain]-> "wishList\n1" WishList         
+Client            -[#595959,dashed]->  WishList         : "«create»"
+ComputeByAbsolut  -[#008200,dashed]-^  ValorarStrategy  
+ComputeByPromig   -[#008200,dashed]-^  ValorarStrategy  
+ComputeValue     "1" *-[#595959,plain]-> "valorarStrategy\n1" ValorarStrategy  
+LikeValor         -[#008200,dashed]-^  Valoracio        
+LikeValorType     -[#595959,dashed]->  LikeValor        : "«create»"
+LikeValorType     -[#000082,plain]-^  ValorFactory     
+LikesHashMap      -[#000082,plain]-^  RatingHashMap    
+LikesHashMap      -[#595959,dashed]->  RatingManager    : "«create»"
+LikesHashMap     "1" *-[#595959,plain]-> "ratingManager\n1" RatingManager    
+LikesHashMap      -[#595959,dashed]->  RatingValue      : "«create»"
+LikesHashMap     "1" *-[#595959,plain]-> "ratingValue\n1" RatingValue      
+LikesHashMap     "1" *-[#595959,plain]-> "likeValoracions\n*" Valoracio        
+ModelFacade       -[#595959,dashed]->  ValorFacade      : "«create»"
+ModelFacade      "1" *-[#595959,plain]-> "valorFacade\n1" ValorFacade      
+ModelFacade      "1" *-[#595959,plain]-> "imubCataleg\n1" imUBCataleg      
+ModelFacade      "1" *-[#595959,plain]-> "imubClients\n1" imUBClients      
+PointValor        -[#008200,dashed]-^  Valoracio        
+PointValorType    -[#595959,dashed]->  PointValor       : "«create»"
+PointValorType    -[#000082,plain]-^  ValorFactory     
+PointsHashMap     -[#000082,plain]-^  RatingHashMap    
+PointsHashMap    "1" *-[#595959,plain]-> "ratingManager\n1" RatingManager    
+PointsHashMap     -[#595959,dashed]->  RatingManager    : "«create»"
+PointsHashMap     -[#595959,dashed]->  RatingValue      : "«create»"
+PointsHashMap    "1" *-[#595959,plain]-> "ratingValue\n1" RatingValue      
+PointsHashMap    "1" *-[#595959,plain]-> "pointValoracions\n*" Valoracio        
+RatingManager     -[#595959,dashed]->  PointValorType   : "«create»"
+RatingValue       -[#595959,dashed]->  ComputeByAbsolut : "«create»"
+RatingValue       -[#595959,dashed]->  ComputeByPromig  : "«create»"
+RatingValue       -[#595959,dashed]->  ComputeValue     : "«create»"
+RatingValue      "1" *-[#595959,plain]-> "computeValue\n1" ComputeValue     
+StarFactory       -[#595959,dashed]->  StarValue        : "«create»"
+StarFactory       -[#000082,plain]-^  ValorFactory     
+StarValue         -[#008200,dashed]-^  Valoracio        
+StarsHashMap      -[#000082,plain]-^  RatingHashMap    
+StarsHashMap     "1" *-[#595959,plain]-> "ratingManager\n1" RatingManager    
+StarsHashMap      -[#595959,dashed]->  RatingManager    : "«create»"
+StarsHashMap      -[#595959,dashed]->  RatingValue      : "«create»"
+StarsHashMap     "1" *-[#595959,plain]-> "ratingValue\n1" RatingValue      
+StarsHashMap     "1" *-[#595959,plain]-> "starValoracions\n*" Valoracio        
+ValorFacade       -[#595959,dashed]->  LikesHashMap     : "«create»"
+ValorFacade       -[#595959,dashed]->  PointsHashMap    : "«create»"
+ValorFacade      "1" *-[#595959,plain]-> "likesRating\n1" RatingHashMap    
+ValorFacade       -[#595959,dashed]->  StarsHashMap     : "«create»"
+ValorFacade      "1" *-[#595959,plain]-> "cataleg\n1" imUBCataleg      
+imUBClients       -[#595959,dashed]->  CarteraClients   : "«create»"
+imUBClients      "1" *-[#595959,plain]-> "cartera\n1" CarteraClients   
+@enduml

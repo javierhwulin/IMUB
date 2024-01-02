@@ -1,0 +1,168 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class ComboBoxItemWrap<T> {
+  ~ ComboBoxItemWrap(T, Boolean): 
+  ~ ComboBoxItemWrap(T): 
+  ~ ComboBoxItemWrap(): 
+  - item: ObjectProperty<T>
+  - check: BooleanProperty
+  + itemProperty(): ObjectProperty<T>
+  + checkProperty(): BooleanProperty
+  + toString(): String
+   item: T
+   check: Boolean
+}
+class DataTop {
+  ~ DataTop(String, Integer): 
+  - nom: SimpleStringProperty
+  - value: SimpleStringProperty
+   nom: String
+   value: String
+}
+class DataWish {
+  ~ DataWish(String): 
+  - nom: SimpleStringProperty
+   nom: String
+}
+class Escena {
+  + Escena(): 
+  # controller: Controller
+  # stage: Stage
+   stage: Stage
+   controller: Controller
+}
+class EscenaEpisodiDetalls {
+  + EscenaEpisodiDetalls(): 
+  + start(): void
+  + onBtnValorarClick(): void
+  + initData(): void
+}
+class EscenaEpisodisSelector {
+  + EscenaEpisodisSelector(): 
+  - mostrarEpisodiDetalls(Integer): void
+  - createEpisodiButton(Integer, String, double, double, double, double): Button
+  + start(): void
+  + popularEpisodis(String, Integer): void
+}
+enum EscenaFactory << enumeration >> {
+  + EscenaFactory(): 
+  + valueOf(String): EscenaFactory
+  ~ creaEscena(String, String): Escena
+  + values(): EscenaFactory[]
+}
+class EscenaLogin {
+  + EscenaLogin(): 
+  + start(): void
+  + onCancelButtonClick(): void
+  - event_goMain(String): void
+  # onRegisterWindow(): void
+  # onLoginButtonClick(): void
+}
+class EscenaMain {
+  + EscenaMain(): 
+  + onButtonIzqResetFiltresClick(): void
+  + onButtonEstrellesClick(): void
+  + popularWishList(): void
+  - popularObresAudiovisualsPerNom(): void
+  + popularTopDeuValorades(): void
+  + asignarimagen(): void
+  + start(): void
+  - mostrarFinestraObraAudiovisual(String): void
+  + observable_comboBox_main_comunitat(): void
+  + onButtonLikesClick(): void
+  + initStartMain(): void
+  + assignarTextPrincipal_Correu_i_Comunitat(String): void
+  + popularComboBoxTematiques(): void
+  + popularComboBoxTipus(): void
+  + onButtonPuntsClick(): void
+  - createObraAudiovisualButton(String, String, double, double, double, double): Button
+  + update(String): void
+  + initViewMemory(): void
+  + onPonderadaCheckbox(): void
+}
+class EscenaPelliculaDetalls {
+  + EscenaPelliculaDetalls(): 
+  + start(): void
+  + initData(): void
+  + onBtnwishListAddClick(): void
+  + onBtnValorarClick(): void
+}
+class EscenaRegister {
+  + EscenaRegister(): 
+  + onRegistreButtonClick(): void
+  - event_goLogin(String): void
+  + populateComunitats(): void
+  + start(): void
+  + onTornarLoginButtonClick(): void
+}
+class EscenaSerieDetalls {
+  + EscenaSerieDetalls(): 
+  + onBtntemporadesViewAddClick(): void
+  + initData(): void
+  + onBtnWishListClick(): void
+  + start(): void
+}
+class EscenaTemporadesDetalls {
+  + EscenaTemporadesDetalls(): 
+  - createTemporadaButton(Integer, String, double, double, double, double): Button
+  - mostrarEpisodisSelector(Integer): void
+  + popularTemporades(String): void
+  + start(): void
+}
+class EscenaValorarObra {
+  + EscenaValorarObra(): 
+  + start(): void
+  + initDisabled(): void
+  + onButtonCancelarClick(): void
+  - initialize_RB(): void
+  + onButtonValorarClick(): void
+  + initObservers(): void
+}
+class MainListener {
+  + MainListener(EscenaMain): 
+  + update(String): void
+}
+interface UpdateListener << interface >> {
+  + update(String): void
+}
+class UpdaterManager {
+  + UpdaterManager(String[]): 
+  + subscribe(String, UpdateListener): void
+  + notify(String): void
+  + unsubscribe(String, UpdateListener): void
+}
+class ViewMemory {
+  + ViewMemory(): 
+  - filterTypeObraAudioVisual: String
+  - filterTypeTop: String
+  - filterTypeValue: String
+  - filterStrategyValue: String
+  - mainScene: Escena
+   filterTypeValue: String
+   filterTypeTop: String
+   mainScene: Escena
+   filterTypeObraAudioVisual: String
+   filterStrategyValue: String
+}
+class Vista {
+  + Vista(Stage, Controller): 
+}
+
+DataTop                  +-[#820000,plain]-  EscenaMain              
+DataWish                 +-[#820000,plain]-  EscenaMain              
+EscenaEpisodiDetalls     -[#000082,plain]-^  Escena                  
+EscenaEpisodisSelector   -[#000082,plain]-^  Escena                  
+EscenaLogin              -[#000082,plain]-^  Escena                  
+EscenaMain               -[#000082,plain]-^  Escena                  
+EscenaMain               -[#008200,dashed]-^  UpdateListener          
+EscenaPelliculaDetalls   -[#000082,plain]-^  Escena                  
+EscenaRegister           -[#000082,plain]-^  Escena                  
+EscenaSerieDetalls       -[#000082,plain]-^  Escena                  
+EscenaTemporadesDetalls  -[#000082,plain]-^  Escena                  
+EscenaValorarObra        -[#000082,plain]-^  Escena                  
+MainListener             -[#008200,dashed]-^  UpdateListener          
+@enduml

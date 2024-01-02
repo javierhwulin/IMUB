@@ -17,12 +17,12 @@ public class LikesHashMap extends RatingHashMap{
 
     @Override
     public void addFilmRating(imUBCataleg cataleg, Client client, String title, float rating) {
-        ratingManager.addFilmRating(likeValoracions, cataleg, client, title, rating);
+        ratingManager.addFilmRating(likeValoracions, cataleg, client, title, rating, ValorType.VALORAR_PER_LIKES.toString());
     }
 
     @Override
     public void addEpisodeRating(imUBCataleg cataleg, Client client, String title, int numTemporada, int numEpisodi, float rating) {
-        ratingManager.addEpisodeRating(likeValoracions, cataleg, client, title, numTemporada, numEpisodi, rating);
+        ratingManager.addEpisodeRating(likeValoracions, cataleg, client, title, numTemporada, numEpisodi, rating, ValorType.VALORAR_PER_LIKES.toString());
     }
 
     @Override

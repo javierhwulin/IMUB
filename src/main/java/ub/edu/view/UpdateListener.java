@@ -1,5 +1,5 @@
 package ub.edu.view;
 
-public interface UpdateListeners {
+public interface UpdateListener {
     void update(String updateType);
 }

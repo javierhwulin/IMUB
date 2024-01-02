@@ -1,8 +1,8 @@
 package ub.edu.view;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -13,16 +13,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import ub.edu.model.ValorType;
 import ub.edu.model.cataleg.ContingutType;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class EscenaMain extends Escena implements UpdateListeners {
+public class EscenaMain extends Escena implements UpdateListener {
     private static final double ESPAI_ENTRE_BOTONS = 30;
 
     public Button obra_audiovisual_btn;
@@ -63,10 +63,37 @@ public class EscenaMain extends Escena implements UpdateListeners {
         // TODO: Repensar on es cridaran aquests mètodes
         popularTopDeuValorades();
         popularWishList();
+
+        //Quan tanquem la finestra main, es tanca l'aplicació.
+        OnClosedRequest(this.stage);
     }
+
     @Override
     public void update(String updateType) throws IllegalArgumentException {
         mainListener.update(updateType);
+    }
+
+    public void OnClosedRequest(Stage stage){
+        stage.setOnCloseRequest(event -> {
+            event.consume();
+
+            // Mostrar una advertencia antes de cerrar
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Sortir de l'aplicació");
+            alert.setHeaderText("Estas segur que vols sortir de l'aplicació?");
+            alert.setContentText("Pots perdre dades si no has guardat!");
+            alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+
+            Stage closedStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            closedStage.getIcons().add(new Image("/ub/edu/static-resources/WARNing.jpg"));
+
+            // Mostrar la alerta y manejar la respuesta del usuario
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.YES) {
+                    Platform.exit();
+                }
+            });
+        });
     }
 
     public void initStartMain(){

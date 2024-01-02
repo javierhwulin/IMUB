@@ -8,6 +8,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import ub.edu.AppMain;
+import ub.edu.controller.Controller;
 
 import java.io.IOException;
 
@@ -34,30 +35,6 @@ public enum EscenaFactory {
 
         //Setegem l'escena en el stage
         newStage.setScene(newScene);
-
-        //Quan tanquem la finestra main, es tanca l'aplicació.
-        if(escena instanceof EscenaMain) {
-            newStage.setOnCloseRequest(event -> {
-                event.consume();
-
-                // Mostrar una advertencia antes de cerrar
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Sortir de l'aplicació");
-                alert.setHeaderText("Estas segur que vols sortir de l'aplicació?");
-                alert.setContentText("Pots perdre dades si no has guardat!");
-                alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
-
-                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-                stage.getIcons().add(new Image("/ub/edu/static-resources/WARNing.jpg"));
-
-                // Mostrar la alerta y manejar la respuesta del usuario
-                alert.showAndWait().ifPresent(response -> {
-                    if (response == ButtonType.YES) {
-                        Platform.exit();
-                    }
-                });
-            });
-        }
 
         //Mostrem la finestra
         newStage.show();

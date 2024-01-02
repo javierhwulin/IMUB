@@ -18,12 +18,12 @@ public class StarsHashMap extends RatingHashMap{
 
     @Override
     public void addFilmRating(imUBCataleg cataleg, Client client, String title, float rating) {
-        ratingManager.addFilmRating(starValoracions, cataleg, client, title, rating);
+        ratingManager.addFilmRating(starValoracions, cataleg, client, title, rating, ValorType.VALORAR_PER_ESTRELLES.toString());
     }
 
     @Override
     public void addEpisodeRating(imUBCataleg cataleg, Client client, String title, int numTemporada, int numEpisodi, float rating) {
-        ratingManager.addEpisodeRating(starValoracions, cataleg, client, title, numTemporada, numEpisodi, rating);
+        ratingManager.addEpisodeRating(starValoracions, cataleg, client, title, numTemporada, numEpisodi, rating, ValorType.VALORAR_PER_ESTRELLES.toString());
     }
 
     @Override

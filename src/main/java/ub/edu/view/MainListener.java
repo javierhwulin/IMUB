@@ -1,6 +1,6 @@
 package ub.edu.view;
 
-public class MainListener implements UpdateListeners{
+public class MainListener implements UpdateListener {
     private final EscenaMain escenaMain;
 
     public MainListener(EscenaMain escenaMain){
