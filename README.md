@@ -1,255 +1,118 @@
-# P4-viewDB-imUB
+# **imUB**
 
-Codi base de la pràctica 4 de DS 2023-24: GUI i BD de Pel·lícules i Sèries
+**A movie and series management application with an intuitive GUI and database integration**
+*Developed as a student project for the Bachelor's in Computer Engineering*
+*Faculty of Mathematics and Computer Science, UB*
 
-Grau d'Enginyeria Informàtica. Facultat de Matemàtiques i Informàtica. UB
+------
 
+## **1. Descripció**
 
-<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+**imUB** is a student-developed project that combines modern software design principles with a practical implementation of a movie and series management system. The application features:
 
-- [1. Descripció ](#1-descripció)
-- [2. Instal·lació<a name="installació"></a>](#2-installació)
-- [Apèndix A: Part de la Vista gràfica: GUI](#apèndix-a-part-de-la-vista-gràfica-gui)
-- [Apèndix B: Manual de la Base de Dades](#apèndix-b-manual-de-la-base-de-dades)
-- [Apèndix C: Problemes d'instal·lació: Que fer perquè el projecte funcioni?](#apèndix-c-problemes-dinstallació-que-fer-perquè-el-projecte-funcioni)
+- A comprehensive list of available digital content (movies and series).
+- A personalized WishList for users to track desired content.
+- A dynamic Top 10 ranking of the best-rated content, updated automatically.
 
-<!-- TOC end -->
+This project focuses on implementing an intuitive **Graphical User Interface (GUI)** using **JavaFX** and an integrated **SQLite database**. It serves as a practical exercise to explore the **Model-View-Controller (MVC)** architecture, database interactions, and real-time interface updates.
 
-## 1. Descripció 
+The project also emphasizes hands-on learning of:
 
-Per tal que pugueu dissenyar més ràpidament la pràctica 4, us proporcionem ja una interfície gràfica implementada en Java FX, que podeu modificar al vostre gust. Podeu també fer-la des de zero si aquesta interfície no us convenç, però recordeu que la finalitat de la pràctica 4 és **estudiar el disseny intern del software i no estudiar la interfície gràfica per si mateixa.**
+- Efficient GUI design.
+- Real-time data synchronization with a database.
+- Dynamic rankings based on user ratings and preferences.
 
-## 2. Instal·lació
+Ideal for exploring both the theoretical and practical aspects of software development, **imUB** highlights how software layers work together to create a functional and user-friendly application.
 
+### **Features and Functionalities:**
 
-**PAS 1.** Configura el projecte per a que s'executi la interfície gràfica
+1. **Content Management:**
+    - Displays a categorized list of movies and series available in the database.
+    - Allows sorting by name, type (movies/series), and theme (future implementation).
+2. **WishList:**
+    - A personalized list for users to save and track movies or series they plan to watch.
+    - Automatically updates as content is added or removed.
+3. **Top 10 Rankings:**
+    - Dynamic rankings of the most popular content, calculated based on average or weighted user ratings.
+    - Users can view rankings based on different criteria, such as likes/dislikes or star ratings.
+4. **Real-Time Updates:**
+    - Ratings and WishList changes are reflected immediately without requiring manual refreshes.
+5. **Secure Login System:**
+    - Users must log in with credentials stored in the database to access the application.
+    - The system supports multiple users, with unique profiles and preferences.
 
-Vigila que la versió de Java ara ha de ser la **17**, per a poder compilar amb JavaFX.
+------
 
-![](pictures/imatgeVersio.png)
+## **2. Instal·lació**
 
-**PAS 2.** Instal·la les dependències
+Follow these steps to set up and run the **imUB** application:
 
-Per a instal·lar les dependències del pr[]()ojecte el primer cop que l'executes, fes clic amb el botó dret del ratolí sobre el arxiu pom.xml, obre el menú Maven, i selecciona la opció de recarregar projecte.
+### **Step 1: Configure Java and JavaFX**
 
-![](pictures/imatgeMaven.png)
+- Ensure that you have **Java 17** installed to compile and run the application with JavaFX support.
+- Update your environment to include JavaFX dependencies.
 
-**PAS 3.** Configura IntelliJ per a accedir a la Base de Dades
+### **Step 2: Install Dependencies**
 
-Funciona només en la versió Ultimate de la que teniu llicència d'estudiant. 
-Podeu usar la vista de base dades per comprovar-ne i editar-net el contingut. Mira l'Apèndix B per més detalls.
+- Open the project in **IntelliJ IDEA**.
+- Right-click on the `pom.xml` file, navigate to the Maven menu, and select "Reload Project" to install all required dependencies.
 
-![](pictures/baseDades.png)
+### **Step 3: Configure Database Access**
 
-**PAS 4.** Executa el projecte: AppMain
+- Use the IntelliJ Ultimate Edition (student license) to enable database tools.
+- Open the `data.sqlite` file from the project’s `Data` folder to view and manage the database contents. Refer to Appendix B for details.
 
-**p4-viewDB-imUB** de la pràctica 4 està formada per un projecte que conté una classe main: AppMain que crea directament la vista, sense tenir ni controlador ni model.
+### **Step 4: Run the Application**
 
-Quan executeu el codi, surt una primera finestra per entrar un nom d'una persona enregistrada a l'aplicació (mira la base de dades per veure les persones inscrites a la taula Persona):
+- Run the `AppMain` class to start the application.
+- Log in using credentials from the `Persona` table in the database. Example users are preloaded for testing purposes.
 
-![](pictures/PersonaBD.png)
 
-En aquesta versió, podeu entrar amb qualsevol client de la base de dades i la seva contrasenya i us deixarà entrar a l'aplicació general. La finestra principal (formulari **main-view** ) té el següent aspecte:
 
-![](pictures/login.png)
+## **Apèndix A: Part de la Vista gràfica: GUI**
 
-Per ara hem posat dades a les llistes de les pel·lícules i les sèries a la Base de Dades a mode d'exemple de com omplir les llistes de la interfície. 
-Fixeu-vos que hi ha llistes que es poden carregar en la vista des de l'inici, i d'altres que cal anar actualitzant a mesura que es valoren els continguts digitals.
+### **A.1. Scene Management in JavaFX**
 
-En aquesta finestra ja podeu veure les llistes que us comentava l'enunciat:
+- The project uses JavaFX `.fxml` files for the visual layout of windows.
+- Each `.fxml` file is linked to a corresponding Java controller class via the `fx:controller` attribute.
+- The `EscenaFactory` class simplifies creating new scenes dynamically.
 
-1. La Llista dels continguts digitals disponibles que es poden llistar ordenats per nom.
-2. La WishList del Client 
-3. Vista del Top 10 de les Pel·lícules/Sèries més ben valorades per tots els clients de l'aplicació.
-Fixeu-vos que al peu de les llistes teniu diferents opcions:
+### **A.2. Using SceneBuilder**
 
-- A la llista de Continguts Digitals es poden llistar per tipus (Pel·l´ciules o Sèries) o cercar per Temàtica (no implementat).
-- A la llista de Top 10 es poden seleccionar els diferents criteris a usar per a calcular els Rankings per valoracions (o punts), ja sigui promig o ponderats. Per defecte està activat el mostrar el Top10 de Pel·lícules millor valorades calculat per promig de les valoracions fetes per tots els clients.
-A part, la interfície permet valorar per altres tipus de valoracions. Per exemple si podeu valorar per likes/unlikes i per estrelles, 
-els criteris per mostrar els Rankings hauran de ser Per Like, o Per Estrelles i només un dels criteris estarà actiu alhora.
+- Download and install a SceneBuilder tool to edit .fxml files visually. Options include:
+    - [Oracle SceneBuilder](https://www.oracle.com/java/technologies/javase/javafxscenebuilder-info.html)
+    - [Gluon SceneBuilder](https://gluonhq.com/products/scene-builder/)
+- Right-click on an `.fxml` file in IntelliJ and select "Open in SceneBuilder" to edit its layout.
 
-Recordeu que en la finestra principal de l'aplicació, la part de la WishList i el Top 10  **sempre** estan visibles en la pantalla de l'aplicació, actualitzant-se quan hi hagi canvis en les valoracions, 
-sense necessitat que l'usuari provoqui el refresc, sinó just en el moment que es detecti un canvi en les dades.
 
-**PAS 5.** Explora el projecte:
 
-Explora les classes que tens a cadascuna de les parts del Model-Vista-Controlador.
+## **Apèndix B: Manual de la Base de Dades**
 
-El teu main es troba a la classe AppMain que deriva de la classe Application de la llibreria de JavaFX. Explora el main del projecte i distribueix les responsabilitats de crear el Controlador, el Model i la Vista segons convingui. El codi que se't dona és només una versió per a que funcioni. 
-En el segon pas de la pràctica 4 proposaràs qui hauria de cridar o crear a qui.
+### **B.1. Viewing and Editing the Database**
 
-![](pictures/DCDGeneralMVC.png)
+- Use IntelliJ’s Database View to explore and modify the SQLite database (`data.sqlite`).
+- Add new records or update existing ones to reflect changes in the application. Refer to screenshots for step-by-step guidance.
 
-**PAS 5.1.** Explora la part del Model
+### **B.2. Synchronizing Changes**
 
-Fixa't que en el model no s'han inclòs les classes de valoracions nidades de les WishLists.
-A la carpeta de resources s'ha afegit una façana per inicialitzar i treballar a la vegada amb els serveis oferts pel DataService i les classes internes del model (classe ResourcesFacade).
+- After making database modifications:
+    1. Stop any running instance of the application.
+    2. Update tables as needed, ensuring all required fields are populated.
+    3. Save changes and restart the application to see the updates reflected.
 
-![](pictures/DCDModel.png)
 
-Fixa't com s'organitza la capa de resources de l'aplicació, per permete la inicialització dels serveis de la capa de dades i la capa de model
 
-![](pictures/DCDResources.png)
+## **Apèndix C: Problemes d'Instal·lació**
 
-**PAS 5.2. Explora la part del Controlador**
+If the application fails to run, follow these troubleshooting steps:
 
-El Controlador dona els serveis a la Vista. Té la classe SessionMemory per poder tenir la informació que està activa a cada moment de l'aplicació.
-
-![](pictures/DCDController.png)
-
-**PAS 5.3.** Explora les classes de la carpeta view per a veure com es programa la interfície gràfica en JavaFX
-
-El paquet de la vista està organitzat segons el següent diagrama de classes. Executa el projecte per veure a partir de quina finestra es creen les finestres que van apareixen a l'execució.
-
-![](pictures/DCDview.png)
-
-Cada escena té associada un fitxer .fxml on es troba la distribució dels diferents components de l'escena (botons, camps de text, pestanyes...). Aquests fitxers es troben a la carpeta de view-resources/ub/edu/view i es poden editar manualment tal i com es detalla a l'Apèndix A.1. Es pot utilitzar també un _SceneBuilder_ (consultar l'Apèndix A.2). Addicionalment, també es pot incloure un fitxer _.css_ per modificar l'estil dels components de l'escena (no es valorarà en aquesta pràctica).
-
-
-## Apèndix A: Part de la Vista gràfica: GUI
-
-**A.1. Afegir una nova finestra a l'escena: Cal lligar el .java amb el fxml i a l'inrevés**
-
-Per crear una nova finestra amb una escena, cal:
-
-1. Crear un nou fitxer .fxml associat a aquesta. Per aquest exemple, prenem el fitxer _login-view.fxml_
-
-2. En el fitxer .fxml de cada escena, trobarem un paràmetre, _fx:controller_, on podem indicar quina és la classe associada a aquesta escena. Per exemple, en el fitxer _login-view.fxml_, trobem al final de la línia 9:
-```fxml
-fx:controller="ub.edu.view.EscenaLogin"
-```
-
-1. Utilitzar el mètode _creaEscena_ de _EscenaFactory_, tot indicant per paràmetres el nom del fitxer fxml (sense l'extensió), i el títol que volem que tingui la finestra. Mira per exemple la línia 14 de la classe Vista.java on es crea una finestra per mostrar la finestra de login:
-
-``` 
- Escena login = EscenaFactory.INSTANCE.creaEscena("login-view", "imUB Login View");
-
-```
-Com el mètode _creaEscena_ de _EscenaFactory_ ens retorna la instància de l'Escena que acabem de crear (en aquest exemple, ens retornaria una instància de _EscenaLogin_), ara ja podem cridar a mètodes de l'Escena que acabem d'instanciar (línies 16 i 17 de la classe Vista):
-
-```
- login.setController(controller); 
- ```
- 
-
-**A.2. SceneBuilder**
-
-Els SceneBuilders són editors visuals dels fitxers .fxml. Hi ha dos principals que podeu descarregar:
-
-[**https://www.oracle.com/java/technologies/javase/javafxscenebuilder-info.html**](https://www.oracle.com/java/technologies/javase/javafxscenebuilder-info.html)
-
-[**https://gluonhq.com/products/scene-builder/**](https://gluonhq.com/products/scene-builder/)
-
-Si descarregueu el _SceneBuilder_ de _gluonhq_, us proporcionarà alguns components que no s'inclouen a les llibreries del projecte. Aquests components no s'han d'utilitzar (el programa us avisarà abans quan intenteu afegir aquests tipus de components).
-
-Un cop descarregat, podreu modificar els fitxers .fxml fent click dret i seleccionant "Open in SceneBuilder":
-
-![](pictures/OpenSceneBuilder.png)
-
-![](pictures/OpenSceneBuilder2.png)
-
-Al final s'hauria de poder veure com s'obre el SceneBuilder del fitxer .fxml seleccionat (vegeu l'exemple de login).
-
-![](pictures/OpenSceneBuilder3.png)
-
-
-*A.3. Exposant components de la vista des dels fitxers .fxml a les Escenes*
-
-Per poder accedir des del codi als diferents components d'una Escena, un cop tingueu creat el component, haureu d'afegir un paràmetre _fx-id_ indicant el nom de la variable que vulgueu que tingui el component. Per exemple, pel botó de Login en _login-view.fxml, línia 44,trobem:_
-
-```fxml
-<Button fx:id="login_btn" layoutX="150.0" layoutY="145.0" onAction="#onLoginButtonClick" styleClass="login_btn" text="Login" />
-```
-
-I, en _EscenaLogin.java,_ tenim declarats tots els components que hem exposat en el fitxer _.fxml_:
-```java
-public class EscenaLogin extends Escena {
-
-    public Button login_btn;
-    public TextField login_correu;
-    public PasswordField login_pwd;
-    public Button register_btn;
-    public Button cancel_btn;
-    private String correu;
-    ...
-}
-```
-
-Fixem-nos també que, en el fitxer _.fxml_, hem posat la tag _onAction="#onLoginButtonClick"._ Això vol dir que, en fer click en aquest botó, es cridarà al mètode _onLoginButtonClick_ de la classe _EscenaLogin_ (línia 27).
-```java
- @FXML
-    protected void onLoginButtonClick(){
-        String correu=login_correu.getText();
-        String pwd=login_pwd.getText();
-        ...
-  }
-```
-
-## Apèndix B: Manual de la Base de Dades
-
-**B.1. Com veure les dades de la Base de Dades des d'IntelliJ**
-
-Activa la visualització de la Base de dades a IntelliJ, anant al menú de View-\>Tool Windows -\> DataBase
-
-![](pictures/img.png)
-
-Hauràs de veure una llengüeta a la dreta de la interfície del IntelliJ que posa Database.
-
-Si allà no se'n mostra cap, indica on està la Base de Dades, seleccionant DataSource From Path:
-
-![img2.png](pictures/img2.png)
-
-
-I en el menú, posa on està la nostra base de dades (fitxer data.sqlite dins de la carpeta Data dels DAOs tipus DB):
-
-![](pictures/DataDAOS.png)
-
-Et sortirà un menú on només cal que acceptis clicant el botó OK:
-
-![](pictures/MenuDBDATA.png)
-
-Finalment, et sortirà la Base de Dades a la finestra de la dreta. Si dins del main no hi trobes res, prem el botó de refrescar.
-
-![](pictures/Refrescar.png)
-
-Finalment, selecciona la taula dins de main-\>tables i podràs veure el seu contingut
-
-![](pictures/MainTables.png)
-![](pictures/TablesDetalls.png)
-**B.2. Com modificar les dades i reflectir els canvis a imUB**
-
-Un cop visualitzis una taula concreta pots posar-hi més valors a les noves files. Per que tot funcioni:
-
-1. Para l'execució del AppMain (si en tens alguna executant-se)
-2. Modifica o afegeix les dades que vulguis a la taula que desitgis prement el botó "+"
-
-![](pictures/Boto+.png)
-
-1. Recorda a omplir tots els camps (excepte els que diuen \<generated\> que s'omplen automàticament per la Base de Dades.:
-
-![](pictures/reomplir.png)
-
-1. Prem el botó de Submit per a actualitzar la BD:
-
-![](pictures/BotóSubmit.png)
-
-
-## Apèndix C: Problemes d'instal·lació: Que fer perquè el projecte funcioni?
-
-De vegades, el problema són les dependències del JavaFX que van lentes amb el Maven o hi ha algun solapament. Però, en principi, cal:
-
-- Primer cal descarregar (o clonar) el projecte del gitHub (o del classroom).
-- Després, comprova que l'arxiu pom.xml es reconeix com a arxiu Maven ![](imatges/Maven.png).
-- Per últim, amb el botó dret del ratolí, es selecciona Maven i reload project.
-
-Després cal esperar una mica per a que carregui les dependències. Tot i així en obrir el fitxer AppMain poden passar 2 coses:
-
-1. hi ha text o línies en vermell (per la qual cosa hem de tornar a recarregar el pom. És una mica especial de vegades i cal carregar-lo dues vegades.
-2. No hi ha res en vermell pel què agafa bé les dependències.
-
-Un cop hem compilat bé, cal executar el AppMain. Aquí pot passar el següent:
-
-1. Aconsegueix arrencar bé i ja funciona i per tant executa la vista. (si s'arriba fins aquí, el tema del pom cal fer-ho la primera vegada que te'l baixes, ara ja sempre et funcionarà si vas fent pulls i pushs en el github).
-2. Salta un error que falten o no es troben algunes dependències del FX. És una línia vermella, màxim 3. En aquest cas, el que cal fer és de nou donar-li botó dret al Maven i recarregar les dependències. Dona-li el seu temps perquè les carregui i, en cas que tardi una mica més, és que ara si les està carregant bé.
-
-Si tot ha anat bé, ja pots executar el AppMain i veure la vista. Si no, torna a fer un pull del projecte i torna a començar.
+1. **Dependency Issues:**
+    - Ensure Maven dependencies are fully loaded by reloading the `pom.xml` file.
+    - Check for errors in the `AppMain` file. If issues persist, reload Maven dependencies again.
+2. **JavaFX Errors:**
+    - Missing JavaFX dependencies can result in runtime errors. Reload Maven or manually verify that all JavaFX libraries are correctly configured.
+3. **Database Errors:**
+    - Ensure the SQLite database file (`data.sqlite`) is present in the expected directory.
+    - Use the IntelliJ Database Viewer to validate database connectivity.
+4. **General Issues:**
+    - Perform a fresh pull of the project repository and repeat the installation steps.
